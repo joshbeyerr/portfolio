@@ -39,6 +39,7 @@ export type LandingCarouselItem = {
   href?: string;
   tileHeight?: number;
   tileWidth?: number;
+  tileStyle?: "default" | "logo";
   image?: {
     src: string;
     alt: string;
@@ -128,6 +129,7 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     size: "square",
     tileWidth: 164,
     tileHeight: 164,
+    tileStyle: "logo",
   },
   {
     id: "in-between-spaces",
@@ -225,6 +227,7 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     size: "square",
     tileWidth: 188,
     tileHeight: 188,
+    tileStyle: "logo",
   },
   {
     id: "cidel",
@@ -255,6 +258,7 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     size: "wide",
     tileWidth: 186,
     tileHeight: 122,
+    tileStyle: "logo",
   },
 
   {
@@ -265,13 +269,14 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     group: "work",
     href: "/projects/cohere-ai",
     image: {
-      src: "/carousel/cohere_ai_logo.jpg",
+      src: "/carousel/cohere_ai_logo.png",
       alt: "Cohere AI",
     },
     variant: "image-bleed",
     size: "square",
     tileWidth: 170,
     tileHeight: 170,
+    tileStyle: "logo",
   },
 
 ];

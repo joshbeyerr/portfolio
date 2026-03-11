@@ -16,11 +16,17 @@ import {
   type LandingCarouselItem,
 } from "@/lib/site-data";
 
-function tileClassName(variant: string, size: string, id: string) {
+function tileClassName(
+  variant: string,
+  size: string,
+  id: string,
+  tileStyle?: "default" | "logo",
+) {
   return [
     "carousel-tile",
     `carousel-tile-${variant}`,
     `carousel-tile-${id}`,
+    tileStyle === "logo" ? "carousel-tile-logo" : "",
     size === "hero" ? "carousel-tile-hero" : "",
     size === "wide" ? "carousel-tile-wide" : "",
     size === "square" ? "carousel-tile-square" : "",
@@ -237,6 +243,7 @@ function CarouselBand({
                     entry.item.variant,
                     entry.item.size,
                     entry.item.id,
+                    entry.item.tileStyle,
                   ),
                   getTileStateClassName(index),
                 ]
@@ -330,33 +337,23 @@ function CarouselBand({
 
                   {entry.item.variant === "resyd" ? (
                     <div className="resyd-card">
-                      <div className="resyd-card-top">
-                        <div>
-                          <p className="resyd-card-brand">Get Resyd</p>
-                          <p className="resyd-card-meta">Automated reservation booking</p>
-                        </div>
-                        <div className="resyd-card-toggle" aria-hidden="true">
-                          <span />
-                        </div>
-                      </div>
-                      <div className="resyd-card-tabs" aria-hidden="true">
-                        <span className="resyd-card-tab resyd-card-tab-active">
-                          Form / Tasks
-                        </span>
-                        <span className="resyd-card-tab">How it works</span>
-                      </div>
-                      <div className="resyd-card-panel">
-                        <p className="resyd-card-title">Book Your Reservation</p>
-                        <div className="resyd-card-selected">
-                          <strong>Selected:</strong> Danny&apos;s Pizza Tavern
-                        </div>
-                        <div className="resyd-card-actions">
-                          <div className="resyd-card-action">Monitor Only</div>
-                          <div className="resyd-card-action resyd-card-action-primary">
-                            Auto-Book
-                          </div>
-                        </div>
-                      </div>
+                      <div
+                        className="resyd-card-orb resyd-card-orb-one"
+                        aria-hidden="true"
+                      />
+                      <div
+                        className="resyd-card-orb resyd-card-orb-two"
+                        aria-hidden="true"
+                      />
+                      <div className="resyd-card-grid" aria-hidden="true" />
+                      <p className="resyd-card-kicker">Reservation Runner</p>
+                      <p className="resyd-card-wordmark">
+                        <span>Get</span>
+                        <strong>Resyd</strong>
+                      </p>
+                      <p className="resyd-card-meta">
+                        Fast booking flows for last-minute tables
+                      </p>
                     </div>
                   ) : null}
                 </div>

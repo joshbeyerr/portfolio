@@ -14,10 +14,10 @@ export default function Home() {
             thoughtful products across financial, engineering, design, and
             product systems.
           </p>
-          <p className="landing-intro-body">
-            I build thoughtful products that combine product thinking,
-            engineering, and design into something people actually want to use.
-          </p>
+          <ul className="landing-intro-body" aria-label="About Josh highlights">
+            <li>Shipping across product, engineering, and design.</li>
+            <li>Most interested in interfaces that feel clear and alive.</li>
+          </ul>
         </div>
       </section>
       */}

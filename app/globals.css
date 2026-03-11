@@ -265,6 +265,7 @@ button {
 
 .landing-page,
 .content-page {
+  position: relative;
   min-height: 100vh;
   padding: 6px 8px 24px;
 }
@@ -356,6 +357,7 @@ button {
   min-height: 36px;
   justify-content: center;
   padding-inline: 24px;
+  overflow: visible;
 }
 
 .ticker-shell {
@@ -381,6 +383,86 @@ button {
   height: 36px;
   border: 1px solid var(--line);
   background: var(--surface);
+}
+
+.globe-panel {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 41;
+  width: min(470px, 38vw);
+  height: auto;
+  min-height: 36px;
+  transform: translateX(-50%);
+}
+
+.globe-panel-collapsed {
+  overflow: hidden;
+}
+
+.globe-panel-expanded {
+  overflow: hidden;
+}
+
+.globe-panel-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.globe-panel-expanded .globe-panel-toggle {
+  border-bottom: 1px solid var(--line);
+}
+
+.globe-panel-body {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px 14px;
+}
+
+.globe-panel-title {
+  max-width: 38ch;
+  margin: 0;
+  font-size: clamp(0.78rem, 0.85vw, 0.9rem);
+  line-height: 1.24;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--ink) 88%, white);
+  font-weight: 500;
+}
+
+.globe-panel-list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  font-size: 11px;
+  line-height: 1.42;
+  color: color-mix(in srgb, var(--muted) 92%, var(--ink));
+}
+
+.globe-panel-list li {
+  position: relative;
+  margin: 0;
+  padding-left: 14px;
+}
+
+.globe-panel-list li::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .cursor-panel {
@@ -617,31 +699,41 @@ button {
 }
 
 .landing-intro-shell {
-  display: flex;
-  justify-content: flex-start;
-  padding-top: clamp(24px, 4.5vh, 56px);
+  position: absolute;
+  top: clamp(56px, 10.2vh, 92px);
+  left: 8px;
+  z-index: 12;
+  pointer-events: none;
 }
 
 .landing-intro {
-  width: min(100%, 620px);
+  width: min(100%, 340px);
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .landing-intro-title {
-  max-width: 30ch;
-  font-size: clamp(0.98rem, 1.25vw, 1.12rem);
-  line-height: 1.12;
-  letter-spacing: -0.035em;
-  color: var(--ink);
+  max-width: 34ch;
+  font-size: clamp(0.76rem, 0.92vw, 0.9rem);
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--ink) 84%, white);
   font-weight: 500;
 }
 
 .landing-intro-body {
-  max-width: 54ch;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--muted);
+  max-width: 32ch;
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 14px;
+  font-size: 10px;
+  line-height: 1.42;
+  color: color-mix(in srgb, var(--muted) 90%, var(--ink));
+}
+
+.landing-intro-body li {
+  margin: 0;
 }
 
 .landing-band {
@@ -745,6 +837,13 @@ button {
   will-change: transform, filter;
 }
 
+.carousel-tile-logo {
+  overflow: visible;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
 .carousel-tile-hovered,
 .carousel-tile:hover,
 .carousel-tile:focus-visible {
@@ -795,6 +894,22 @@ button {
   box-sizing: border-box;
 }
 
+.carousel-tile-logo.carousel-tile-image {
+  background: transparent;
+}
+
+.carousel-tile-logo.carousel-tile-image .carousel-tile-img {
+  object-fit: contain;
+  padding: 10px;
+}
+
+.carousel-tile-logo .carousel-tile-img {
+  object-fit: contain;
+  padding: 10px;
+  box-sizing: border-box;
+  filter: drop-shadow(0 10px 18px rgba(16, 16, 16, 0.12));
+}
+
 .carousel-tile-image-bleed {
   background: #d6d6d3;
 }
@@ -804,8 +919,31 @@ button {
   padding: 0;
 }
 
+.carousel-tile-td-securities .carousel-tile-img,
+.carousel-tile-in-between-spaces .carousel-tile-img {
+  inset: -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  max-width: none;
+  max-height: none;
+  transform: none;
+}
+
+.carousel-tile-logo.carousel-tile-image-bleed {
+  background: transparent;
+}
+
+.carousel-tile-logo.carousel-tile-image-bleed .carousel-tile-img {
+  object-fit: contain;
+  padding: 10px;
+}
+
 .carousel-tile-kic-product-acquisition .carousel-tile-img {
   padding: 20px 42px;
+}
+
+.carousel-tile-logo.carousel-tile-kic-product-acquisition .carousel-tile-img {
+  padding: 14px 28px;
 }
 
 .carousel-tile-reveri {
@@ -985,8 +1123,9 @@ button {
 
 .carousel-tile-resyd {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(245, 247, 252, 0.96)),
-    linear-gradient(135deg, #eef2fb 0%, #dfe6f7 100%);
+    radial-gradient(circle at 18% 18%, rgba(93, 136, 255, 0.34), transparent 26%),
+    radial-gradient(circle at 78% 70%, rgba(22, 26, 48, 0.18), transparent 32%),
+    linear-gradient(145deg, #f7f8ff 0%, #dfe8ff 48%, #c9d9ff 100%);
 }
 
 .carousel-tile-resyd::before {
@@ -994,126 +1133,105 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(76, 116, 235, 0.16) 0 14%, transparent 14% 33%, rgba(76, 116, 235, 0.16) 33% 47%, transparent 47% 68%, rgba(76, 116, 235, 0.18) 68% 82%, transparent 82%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.22));
-  opacity: 0.85;
+    linear-gradient(90deg, rgba(255, 255, 255, 0.34) 0 1px, transparent 1px 18px),
+    linear-gradient(rgba(255, 255, 255, 0.24) 0 1px, transparent 1px 18px);
+  background-size: 18px 18px;
+  opacity: 0.5;
 }
 
 .resyd-card {
   position: absolute;
   inset: 8px;
-  border: 1px solid rgba(33, 102, 255, 0.7);
-  background: rgba(252, 252, 253, 0.92);
-  box-shadow: 0 8px 20px rgba(40, 69, 140, 0.08);
-  color: #1b2a4f;
-}
-
-.resyd-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 9px 10px 7px;
-  border-bottom: 1px solid rgba(33, 102, 255, 0.45);
-}
-
-.resyd-card-brand {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: #2263f1;
+  overflow: hidden;
+  border: 1px solid rgba(34, 73, 173, 0.28);
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.46)),
+    rgba(248, 250, 255, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 10px 24px rgba(42, 73, 148, 0.12);
+  color: #18315a;
 }
 
 .resyd-card-meta {
-  margin-top: 2px;
-  font-size: 7px;
-  color: rgba(27, 42, 79, 0.68);
-}
-
-.resyd-card-toggle {
-  width: 16px;
-  height: 16px;
-  border: 1px solid rgba(33, 102, 255, 0.8);
-  display: grid;
-  place-items: center;
-  color: #2263f1;
-}
-
-.resyd-card-toggle span {
-  width: 6px;
-  height: 6px;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-}
-
-.resyd-card-tabs {
-  display: flex;
-  gap: 0;
-  padding: 7px 10px 0;
-}
-
-.resyd-card-tab {
-  padding: 4px 8px;
-  border: 1px solid rgba(33, 102, 255, 0.75);
-  font-size: 7px;
-  font-weight: 600;
-  color: #1f2d53;
-  background: rgba(255, 255, 255, 0.88);
-}
-
-.resyd-card-tab + .resyd-card-tab {
-  border-left: none;
-}
-
-.resyd-card-tab-active {
-  color: #ffffff;
-  background: #2166ff;
-}
-
-.resyd-card-panel {
-  display: grid;
-  gap: 7px;
-  padding: 9px 10px 10px;
-}
-
-.resyd-card-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: #2263f1;
-}
-
-.resyd-card-selected {
-  padding: 6px 8px;
-  border: 1px solid rgba(33, 102, 255, 0.18);
-  background: rgba(224, 237, 255, 0.62);
-  font-size: 7px;
-  color: #30415f;
-}
-
-.resyd-card-selected strong {
-  color: #20345e;
-}
-
-.resyd-card-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-
-.resyd-card-action {
-  padding: 8px 6px;
-  border: 1px solid rgba(33, 102, 255, 0.4);
-  background: rgba(255, 255, 255, 0.78);
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  margin: 0;
+  max-width: 16ch;
   font-size: 8px;
-  font-weight: 700;
-  text-align: center;
-  color: #162744;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: rgba(24, 49, 90, 0.72);
 }
 
-.resyd-card-action-primary {
-  border-color: rgba(33, 102, 255, 0.92);
-  background: rgba(228, 237, 255, 0.9);
-  color: #2263f1;
+.resyd-card-kicker {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  margin: 0;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(24, 49, 90, 0.52);
+}
+
+.resyd-card-wordmark {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 34px;
+  margin: 0;
+  display: grid;
+  gap: 1px;
+  letter-spacing: -0.07em;
+  line-height: 0.85;
+  color: #16305e;
+}
+
+.resyd-card-wordmark span {
+  display: block;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.resyd-card-wordmark strong {
+  display: block;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.resyd-card-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 65%, rgba(255, 255, 255, 0.46) 65% 66%, transparent 66%),
+    linear-gradient(180deg, transparent 0 52%, rgba(255, 255, 255, 0.4) 52% 53%, transparent 53%);
+  opacity: 0.7;
+}
+
+.resyd-card-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(2px);
+}
+
+.resyd-card-orb-one {
+  right: -12px;
+  top: -8px;
+  width: 88px;
+  height: 88px;
+  background: radial-gradient(circle, rgba(52, 102, 255, 0.42), rgba(52, 102, 255, 0.04) 68%, transparent 72%);
+}
+
+.resyd-card-orb-two {
+  left: 76px;
+  bottom: -24px;
+  width: 108px;
+  height: 108px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.08) 62%, transparent 72%);
 }
 
 .signal-lockup {
@@ -1307,6 +1425,10 @@ button {
     width: min(100%, 440px);
   }
 
+  .globe-panel {
+    width: min(100%, 440px);
+  }
+
   .music-panel {
     width: min(100%, 440px);
   }
@@ -1349,6 +1471,29 @@ button {
 
   .ticker-shell {
     width: 100%;
+  }
+
+  .globe-panel {
+    width: 100%;
+  }
+
+  .globe-panel-toggle {
+    height: 33px;
+    padding-inline: 10px;
+  }
+
+  .globe-panel-body {
+    gap: 8px;
+    padding: 10px 12px 12px;
+  }
+
+  .globe-panel-title {
+    max-width: 100%;
+    font-size: clamp(0.74rem, 3.3vw, 0.84rem);
+  }
+
+  .globe-panel-list {
+    font-size: 10px;
   }
 
   .cursor-panel,

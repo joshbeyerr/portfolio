@@ -3,6 +3,8 @@
 import Link from "next/link";
 import {
   Circle,
+  ChevronDown,
+  ChevronUp,
   Globe,
   Heart,
   Music2,
@@ -90,6 +92,7 @@ export function TopChrome({ activePath }: TopChromeProps) {
   const [activeTool, setActiveTool] = useState<"globe" | "cursor" | "music">(
     "globe",
   );
+  const [globeExpanded, setGlobeExpanded] = useState(() => activePath === "/");
   const [spotifyState, setSpotifyState] = useState<{
     loading: boolean;
     loadedOnce: boolean;
@@ -108,6 +111,10 @@ export function TopChrome({ activePath }: TopChromeProps) {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem("portfolio-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    setGlobeExpanded(activePath === "/");
+  }, [activePath]);
 
   useEffect(() => {
     let cancelled = false;
@@ -197,6 +204,15 @@ export function TopChrome({ activePath }: TopChromeProps) {
     setTheme((current) => (current === "light" ? "dark" : "light"));
   };
 
+  const handleGlobeToolClick = () => {
+    if (activeTool === "globe") {
+      setGlobeExpanded((current) => !current);
+      return;
+    }
+
+    setActiveTool("globe");
+  };
+
   return (
     <header className="landing-topbar">
       <div className="landing-leftbar">
@@ -218,11 +234,50 @@ export function TopChrome({ activePath }: TopChromeProps) {
 
       <div className="landing-centerbar">
         {activeTool === "globe" ? (
-          <div className="ticker-shell" aria-label="Status ticker">
-            <div className="ticker-track">
-              <span>{tickerText}</span>
-              <span aria-hidden="true">{tickerText}</span>
-            </div>
+          <div
+            className={`globe-panel center-panel ${globeExpanded ? "globe-panel-expanded" : "globe-panel-collapsed"}`}
+            aria-label={globeExpanded ? "About Josh" : "Status ticker"}
+          >
+            <button
+              type="button"
+              className="globe-panel-toggle"
+              onClick={() => setGlobeExpanded((current) => !current)}
+              aria-expanded={globeExpanded}
+              aria-label={globeExpanded ? "Collapse about panel" : "Expand about panel"}
+            >
+              <span>{globeExpanded ? "About" : "Status"}</span>
+              {globeExpanded ? (
+                <ChevronUp className="h-[11px] w-[11px]" strokeWidth={1.8} />
+              ) : (
+                <ChevronDown className="h-[11px] w-[11px]" strokeWidth={1.8} />
+              )}
+            </button>
+
+            {globeExpanded ? (
+              <div className="globe-panel-body">
+                <p className="globe-panel-title">
+                  Hi! I&apos;m Josh, a full-stack and product developer building
+                  across financial, design, and product systems.
+                </p>
+                <ul
+                  className="globe-panel-list"
+                  aria-label="About Josh highlights"
+                >
+                  <li>Shipping across product, engineering, and design.</li>
+                  <li>Focused on useful systems over decorative complexity.</li>
+                  <li>
+                    Most interested in interfaces that feel clear and alive.
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <div className="ticker-shell">
+                <div className="ticker-track">
+                  <span>{tickerText}</span>
+                  <span aria-hidden="true">{tickerText}</span>
+                </div>
+              </div>
+            )}
           </div>
         ) : null}
 
@@ -337,7 +392,7 @@ export function TopChrome({ activePath }: TopChromeProps) {
           type="button"
           className={`landing-tool-button ${activeTool === "globe" ? "landing-tool-button-active" : ""}`}
           aria-label="Global mode"
-          onClick={() => setActiveTool("globe")}
+          onClick={handleGlobeToolClick}
         >
           <Globe className="h-[12px] w-[12px]" strokeWidth={1.7} />
         </button>
