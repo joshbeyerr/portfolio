@@ -337,22 +337,9 @@ function CarouselBand({
 
                   {entry.item.variant === "resyd" ? (
                     <div className="resyd-card">
-                      <div
-                        className="resyd-card-orb resyd-card-orb-one"
-                        aria-hidden="true"
-                      />
-                      <div
-                        className="resyd-card-orb resyd-card-orb-two"
-                        aria-hidden="true"
-                      />
-                      <div className="resyd-card-grid" aria-hidden="true" />
-                      <p className="resyd-card-kicker">Reservation Runner</p>
                       <p className="resyd-card-wordmark">
                         <span>Get</span>
                         <strong>Resyd</strong>
-                      </p>
-                      <p className="resyd-card-meta">
-                        Fast booking flows for last-minute tables
                       </p>
                     </div>
                   ) : null}

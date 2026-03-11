@@ -341,12 +341,25 @@ button {
   background: color-mix(in srgb, var(--ink) 4%, var(--surface));
 }
 
+.landing-nav-link-disabled {
+  color: color-mix(in srgb, var(--muted) 78%, var(--surface));
+  cursor: default;
+  opacity: 0.55;
+}
+
 .landing-nav-link:hover,
 .landing-nav-link:focus-visible {
   background: #111;
   color: #fff;
   border-color: #111;
   outline: none;
+}
+
+.landing-nav-link-disabled:hover,
+.landing-nav-link-disabled:focus-visible {
+  background: var(--surface);
+  color: color-mix(in srgb, var(--muted) 78%, var(--surface));
+  border-color: var(--line);
 }
 
 .landing-centerbar {
@@ -1123,9 +1136,7 @@ button {
 
 .carousel-tile-resyd {
   background:
-    radial-gradient(circle at 18% 18%, rgba(93, 136, 255, 0.34), transparent 26%),
-    radial-gradient(circle at 78% 70%, rgba(22, 26, 48, 0.18), transparent 32%),
-    linear-gradient(145deg, #f7f8ff 0%, #dfe8ff 48%, #c9d9ff 100%);
+    linear-gradient(180deg, #f7faff 0%, #e6efff 100%);
 }
 
 .carousel-tile-resyd::before {
@@ -1133,105 +1144,43 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.34) 0 1px, transparent 1px 18px),
-    linear-gradient(rgba(255, 255, 255, 0.24) 0 1px, transparent 1px 18px);
-  background-size: 18px 18px;
-  opacity: 0.5;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0));
+  opacity: 0.9;
 }
 
 .resyd-card {
   position: absolute;
   inset: 8px;
-  overflow: hidden;
-  border: 1px solid rgba(34, 73, 173, 0.28);
-  background:
-    linear-gradient(165deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.46)),
-    rgba(248, 250, 255, 0.62);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    0 10px 24px rgba(42, 73, 148, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 1px solid rgba(53, 98, 219, 0.22);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 20px rgba(42, 73, 148, 0.08);
   color: #18315a;
 }
 
-.resyd-card-meta {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 14px;
-  margin: 0;
-  max-width: 16ch;
-  font-size: 8px;
-  line-height: 1.35;
-  letter-spacing: 0.02em;
-  color: rgba(24, 49, 90, 0.72);
-}
-
-.resyd-card-kicker {
-  position: absolute;
-  left: 14px;
-  top: 12px;
-  margin: 0;
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(24, 49, 90, 0.52);
-}
-
 .resyd-card-wordmark {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  top: 34px;
   margin: 0;
   display: grid;
-  gap: 1px;
-  letter-spacing: -0.07em;
-  line-height: 0.85;
+  gap: 0;
+  justify-items: center;
+  letter-spacing: -0.06em;
+  line-height: 0.88;
   color: #16305e;
 }
 
 .resyd-card-wordmark span {
   display: block;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
 }
 
 .resyd-card-wordmark strong {
   display: block;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
-}
-
-.resyd-card-grid {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, transparent 0 65%, rgba(255, 255, 255, 0.46) 65% 66%, transparent 66%),
-    linear-gradient(180deg, transparent 0 52%, rgba(255, 255, 255, 0.4) 52% 53%, transparent 53%);
-  opacity: 0.7;
-}
-
-.resyd-card-orb {
-  position: absolute;
-  border-radius: 999px;
-  filter: blur(2px);
-}
-
-.resyd-card-orb-one {
-  right: -12px;
-  top: -8px;
-  width: 88px;
-  height: 88px;
-  background: radial-gradient(circle, rgba(52, 102, 255, 0.42), rgba(52, 102, 255, 0.04) 68%, transparent 72%);
-}
-
-.resyd-card-orb-two {
-  left: 76px;
-  bottom: -24px;
-  width: 108px;
-  height: 108px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.08) 62%, transparent 72%);
 }
 
 .signal-lockup {
@@ -1361,6 +1310,73 @@ button {
   border: 1px solid color-mix(in srgb, var(--line-soft) 72%, transparent);
   background: color-mix(in srgb, var(--surface) 96%, transparent);
   padding: 20px;
+}
+
+.contact-copy-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  border: 1px solid color-mix(in srgb, var(--line-soft) 72%, transparent);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  text-align: left;
+  transition:
+    transform 180ms cubic-bezier(.2, .8, .2, 1),
+    border-color 180ms cubic-bezier(.2, .8, .2, 1),
+    background-color 180ms cubic-bezier(.2, .8, .2, 1),
+    box-shadow 180ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.contact-copy-card:hover,
+.contact-copy-card:focus-visible {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  outline: none;
+}
+
+.contact-copy-card-copied {
+  background: color-mix(in srgb, var(--surface) 88%, rgba(78, 132, 255, 0.12));
+  border-color: color-mix(in srgb, #4e84ff 42%, var(--line));
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(43, 77, 153, 0.06);
+}
+
+.contact-copy-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.contact-copy-value {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.contact-copy-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #4e84ff 72%, var(--ink));
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity 160ms cubic-bezier(.2, .8, .2, 1),
+    transform 160ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.contact-copy-status-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .tag-chip {

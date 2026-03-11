@@ -825,17 +825,26 @@ export const writing = [
 export const contactChannels = [
   {
     label: "Email",
-    value: "hello@yourname.com",
-    href: "mailto:hello@yourname.com",
+    value: "joshuabeyer2@gmail.com",
+    href: "mailto:joshuabeyer2@gmail.com",
+    copyValue: "joshuabeyer2@gmail.com",
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/yourname",
-    href: "https://www.linkedin.com/in/yourname/",
+    value: "linkedin.com/in/joshua-beyer-8541b3199",
+    href: "https://www.linkedin.com/in/joshua-beyer-8541b3199/",
+    copyValue: "https://www.linkedin.com/in/joshua-beyer-8541b3199/",
   },
   {
     label: "GitHub",
-    value: "github.com/yourname",
-    href: "https://github.com/yourname",
+    value: "github.com/joshbeyerr",
+    href: "https://github.com/joshbeyerr",
+    copyValue: "https://github.com/joshbeyerr",
+  },
+  {
+    label: "X",
+    value: "x.com/JoshBeyer8",
+    href: "https://x.com/JoshBeyer8",
+    copyValue: "https://x.com/JoshBeyer8",
   },
 ];

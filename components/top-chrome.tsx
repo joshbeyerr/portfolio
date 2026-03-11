@@ -76,6 +76,7 @@ const cursorOptions: {
 ];
 
 export function TopChrome({ activePath }: TopChromeProps) {
+  const isHomePage = activePath === "/";
   const { cursorMode, setCursorMode, customCursorEnabled } = useCursorMode();
   const siteAudio = useSiteAudio();
   const setSiteAudioAuthEnabled = siteAudio.setAuthEnabled;
@@ -92,7 +93,7 @@ export function TopChrome({ activePath }: TopChromeProps) {
   const [activeTool, setActiveTool] = useState<"globe" | "cursor" | "music">(
     "globe",
   );
-  const [globeExpanded, setGlobeExpanded] = useState(() => activePath === "/");
+  const [globeExpanded, setGlobeExpanded] = useState(() => isHomePage);
   const [spotifyState, setSpotifyState] = useState<{
     loading: boolean;
     loadedOnce: boolean;
@@ -113,8 +114,8 @@ export function TopChrome({ activePath }: TopChromeProps) {
   }, [theme]);
 
   useEffect(() => {
-    setGlobeExpanded(activePath === "/");
-  }, [activePath]);
+    setGlobeExpanded(isHomePage);
+  }, [isHomePage]);
 
   useEffect(() => {
     let cancelled = false;
@@ -205,6 +206,11 @@ export function TopChrome({ activePath }: TopChromeProps) {
   };
 
   const handleGlobeToolClick = () => {
+    if (!isHomePage) {
+      setActiveTool("globe");
+      return;
+    }
+
     if (activeTool === "globe") {
       setGlobeExpanded((current) => !current);
       return;
@@ -212,6 +218,8 @@ export function TopChrome({ activePath }: TopChromeProps) {
 
     setActiveTool("globe");
   };
+
+  const disabledNavLabels = new Set(["Information", "News"]);
 
   return (
     <header className="landing-topbar">
@@ -221,13 +229,23 @@ export function TopChrome({ activePath }: TopChromeProps) {
         </div>
         <nav className="landing-nav" aria-label="Primary navigation">
           {navigationItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`landing-nav-link ${item.href === activePath ? "landing-nav-link-active" : ""}`}
-            >
-              {item.label}
-            </Link>
+            disabledNavLabels.has(item.label) ? (
+              <span
+                key={item.href}
+                className="landing-nav-link landing-nav-link-disabled"
+                aria-disabled="true"
+              >
+                {item.label}
+              </span>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`landing-nav-link ${item.href === activePath ? "landing-nav-link-active" : ""}`}
+              >
+                {item.label}
+              </Link>
+            )
           ))}
         </nav>
       </div>
@@ -235,25 +253,27 @@ export function TopChrome({ activePath }: TopChromeProps) {
       <div className="landing-centerbar">
         {activeTool === "globe" ? (
           <div
-            className={`globe-panel center-panel ${globeExpanded ? "globe-panel-expanded" : "globe-panel-collapsed"}`}
-            aria-label={globeExpanded ? "About Josh" : "Status ticker"}
+            className={`globe-panel center-panel ${isHomePage && globeExpanded ? "globe-panel-expanded" : "globe-panel-collapsed"}`}
+            aria-label={isHomePage && globeExpanded ? "About Josh" : "Status ticker"}
           >
-            <button
-              type="button"
-              className="globe-panel-toggle"
-              onClick={() => setGlobeExpanded((current) => !current)}
-              aria-expanded={globeExpanded}
-              aria-label={globeExpanded ? "Collapse about panel" : "Expand about panel"}
-            >
-              <span>{globeExpanded ? "About" : "Status"}</span>
-              {globeExpanded ? (
-                <ChevronUp className="h-[11px] w-[11px]" strokeWidth={1.8} />
-              ) : (
-                <ChevronDown className="h-[11px] w-[11px]" strokeWidth={1.8} />
-              )}
-            </button>
+            {isHomePage ? (
+              <button
+                type="button"
+                className="globe-panel-toggle"
+                onClick={() => setGlobeExpanded((current) => !current)}
+                aria-expanded={globeExpanded}
+                aria-label={globeExpanded ? "Collapse about panel" : "Expand about panel"}
+              >
+                <span>{globeExpanded ? "About" : "Status"}</span>
+                {globeExpanded ? (
+                  <ChevronUp className="h-[11px] w-[11px]" strokeWidth={1.8} />
+                ) : (
+                  <ChevronDown className="h-[11px] w-[11px]" strokeWidth={1.8} />
+                )}
+              </button>
+            ) : null}
 
-            {globeExpanded ? (
+            {isHomePage && globeExpanded ? (
               <div className="globe-panel-body">
                 <p className="globe-panel-title">
                   Hi! I&apos;m Josh, a full-stack and product developer building
