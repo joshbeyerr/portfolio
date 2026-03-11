@@ -53,6 +53,17 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <p>{project.year}</p>
           <p>{project.duration}</p>
           <p>{project.role}</p>
+          {project.website ? (
+            <Link
+              href={project.website}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-[13px] font-medium text-[var(--ink)] transition-opacity duration-150 hover:opacity-65"
+            >
+              Visit live site
+              <ArrowUpRight className="h-[14px] w-[14px]" strokeWidth={1.5} />
+            </Link>
+          ) : null}
         </div>
         <div className="space-y-5">
           <p className="max-w-3xl text-[20px] leading-tight tracking-[-0.03em] text-[var(--ink)]">

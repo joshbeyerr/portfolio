@@ -3,6 +3,7 @@ export type Project = {
   title: string;
   heroTitle?: string;
   client: string;
+  website?: string;
   category: string;
   pageMode?: "full" | "brief";
   year: string;
@@ -24,13 +25,10 @@ export type Project = {
 };
 
 export type CursorMode =
-  | "default"
-  | "crosshair"
-  | "grab"
-  | "zoom"
-  | "alias"
-  | "not-allowed"
-  | "guitar";
+  | "standard"
+  | "magnetic"
+  | "project-preview"
+  | "blur-glass";
 
 export type LandingCarouselItem = {
   id: string;
@@ -46,7 +44,6 @@ export type LandingCarouselItem = {
     alt: string;
   };
   variant:
-    | "reveri"
     | "trip"
     | "brooklyn"
     | "cadillac"
@@ -56,7 +53,8 @@ export type LandingCarouselItem = {
     | "image"
     | "image-bleed"
     | "lapis"
-    | "cidel";
+    | "cidel"
+    | "resyd";
   size: "hero" | "wide" | "square";
 };
 
@@ -85,42 +83,19 @@ export const navigationItems = [
 ];
 
 export const cursorModes: { id: CursorMode; label: string }[] = [
-  { id: "default", label: "default" },
-  { id: "crosshair", label: "crosshair" },
-  { id: "grab", label: "grab" },
-  { id: "zoom", label: "zoom" },
-  { id: "alias", label: "alias" },
-  { id: "not-allowed", label: "not-allowed" },
-  { id: "guitar", label: "guitar" },
+  { id: "standard", label: "standard" },
+  { id: "magnetic", label: "magnetic" },
+  { id: "project-preview", label: "project preview" },
+  { id: "blur-glass", label: "blur glass" },
 ];
 
 export const tickerMessages = [
   "New logo and identity system for Scribd by Mother Design",
   "Selected independent work across product systems, brand, and frontend craft",
-  "Now listening support and live cursor modes are scaffolded in this build",
+  "Motion-driven cursor modes now include magnetic, project preview, and blur glass",
 ];
 
 export const landingCarouselItems: LandingCarouselItem[] = [
-  {
-    id: "reveri",
-    title: "reveri",
-    label: "Reveri",
-    description: "Identity and interface exploration",
-    group: "project",
-    href: "/projects/reveri",
-    variant: "reveri",
-    size: "hero",
-  },
-  {
-    id: "trip",
-    title: "trip",
-    label: "Tripadvisor",
-    description: "Travel browsing interface concept",
-    group: "project",
-    href: "/projects/tripadvisor-concept",
-    variant: "trip",
-    size: "wide",
-  },
   {
     id: "td-securities",
     title: "TD Securities",
@@ -134,8 +109,8 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     },
     variant: "image-bleed",
     size: "square",
-    tileWidth: 204,
-    tileHeight: 204,
+    tileWidth: 176,
+    tileHeight: 176,
   },
 
   {
@@ -151,8 +126,25 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     },
     variant: "image",
     size: "square",
-    tileWidth: 188,
-    tileHeight: 188,
+    tileWidth: 164,
+    tileHeight: 164,
+  },
+  {
+    id: "in-between-spaces",
+    title: "The In-Between Spaces",
+    label: "The In-Between Spaces",
+    description:
+      "Community map for third spaces and coworking spots across Toronto",
+    group: "project",
+    href: "/projects/in-between-spaces",
+    image: {
+      src: "/carousel/in-between.jpg",
+      alt: "The In-Between Spaces",
+    },
+    variant: "image-bleed",
+    size: "square",
+    tileWidth: 178,
+    tileHeight: 178,
   },
   {
     id: "brooklyn",
@@ -183,6 +175,19 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     href: "/projects/allup",
     variant: "allup",
     size: "wide",
+  },
+  {
+    id: "get-resyd",
+    title: "Get Resyd",
+    label: "Get Resyd",
+    description:
+      "Automatic restaurant reservation booking for last-minute planners",
+    group: "project",
+    href: "/projects/get-resyd",
+    variant: "resyd",
+    size: "wide",
+    tileWidth: 194,
+    tileHeight: 128,
   },
   {
     id: "music",
@@ -265,8 +270,8 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     },
     variant: "image-bleed",
     size: "square",
-    tileWidth: 196,
-    tileHeight: 196,
+    tileWidth: 170,
+    tileHeight: 170,
   },
 
 ];
@@ -418,6 +423,126 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "in-between-spaces",
+    title: "The In-Between Spaces",
+    heroTitle: "Toronto Third Spaces",
+    client: "Independent Collaboration",
+    website: "https://www.inbetweenspace.ca/",
+    category: "Project",
+    pageMode: "full",
+    year: "2026",
+    duration: "Independent",
+    role: "Frontend / Product / Mapping",
+    headline:
+      "A community-first map for finding third spaces and coworking spots across Toronto.",
+    summary:
+      "Built with a friend, the site helps people discover places in Toronto to work, gather, and find community outside home and the office.",
+    description:
+      "The In-Between Spaces is a practical community tool: a live map of third spaces and coworking locations across Toronto. The product balances utility with a quieter visual identity, making it easy to browse places that support work, social connection, and everyday community-building.",
+    services: [
+      "Product design",
+      "Frontend development",
+      "Map UX",
+      "Community discovery",
+    ],
+    stack: ["Next.js", "React", "Maps", "Location data", "Responsive UI"],
+    metrics: [
+      { label: "City", value: "Toronto" },
+      { label: "Focus", value: "Community" },
+      { label: "Surface", value: "Map UI" },
+    ],
+    outcomes: [
+      "Created a cleaner way to browse third spaces and coworking options across Toronto.",
+      "Turned a community-oriented idea into an accessible public-facing map product.",
+      "Shaped the interface to support both quick scanning and exploratory discovery.",
+    ],
+    detailSections: [
+      {
+        heading: "Product",
+        body:
+          "Built the site with a friend as a simple, useful way for people in Toronto to find places to work, meet, and spend time beyond home and the office.",
+      },
+      {
+        heading: "Interface",
+        body:
+          "Used a restrained visual system so the map, location details, and discovery flow stayed clear rather than feeling overloaded.",
+      },
+      {
+        heading: "Community",
+        body:
+          "The core value is helping people find community through physical places that support focus, chance encounters, and repeat visits.",
+      },
+    ],
+    palette: {
+      base: "#111111",
+      accent: "#d9d9d9",
+      ink: "#f5f5f2",
+    },
+  },
+  {
+    slug: "get-resyd",
+    title: "Get Resyd",
+    heroTitle: "Reservation Booker",
+    client: "Independent Product",
+    website: "https://table-finder-sigma.vercel.app/",
+    category: "Project",
+    pageMode: "full",
+    year: "2026",
+    duration: "Independent",
+    role: "Product / Frontend / Automation",
+    headline:
+      "An automatic restaurant reservation tool built for last-minute bookers.",
+    summary:
+      "Get Resyd monitors reservation availability and can auto-book openings, making it easier to grab tables without constantly refreshing restaurant booking sites.",
+    description:
+      "Get Resyd is a practical booking product built for people who decide late and still want a good shot at getting a reservation. The interface is intentionally direct and utility-first: configure the restaurant, choose whether to monitor or auto-book, and let the product handle the repetitive checking.",
+    services: [
+      "Product design",
+      "Frontend development",
+      "Booking automation",
+      "Workflow design",
+    ],
+    stack: [
+      "Next.js",
+      "React",
+      "Automation workflows",
+      "Reservation monitoring",
+      "Responsive UI",
+    ],
+    metrics: [
+      { label: "Mode", value: "Auto-book" },
+      { label: "User", value: "Last-minute" },
+      { label: "Flow", value: "Monitor" },
+    ],
+    outcomes: [
+      "Reduced the manual effort of checking restaurant availability over and over.",
+      "Designed a straightforward booking flow around monitoring and automatic reservation capture.",
+      "Built the product around a real user behavior: deciding late and moving fast when a slot appears.",
+    ],
+    detailSections: [
+      {
+        heading: "Use case",
+        body:
+          "Made for myself and other last-minute bookers who want a better chance at high-demand reservations without babysitting booking pages.",
+      },
+      {
+        heading: "Flow",
+        body:
+          "The product centers on a simple decision: monitor only, or automatically book the moment an eligible table opens up.",
+      },
+      {
+        heading: "Design",
+        body:
+          "Kept the interface lightweight and task-focused, using a form-led layout that feels more like a control panel than a marketing site.",
+      },
+    ],
+    palette: {
+      base: "#edf3ff",
+      accent: "#1f64ff",
+      ink: "#12213f",
+    },
+  },
+  {
     slug: "kic-product-acquisition",
     title: "KIC Product Acquisition",
     heroTitle: "Pricing Engine",
@@ -531,50 +656,6 @@ export const projects: Project[] = [
       accent: "#141414",
       ink: "#141414",
     },
-  },
-  {
-    slug: "reveri",
-    title: "Reveri",
-    heroTitle: "Soft Brand",
-    client: "Self-Initiated",
-    category: "Project",
-    pageMode: "brief",
-    year: "2025",
-    duration: "Independent",
-    role: "Visual Exploration",
-    headline: "A softer brand system balancing blur, glow, and simple interface structure.",
-    summary:
-      "A brand and interface study exploring warmer gradients and a gentler visual tone.",
-    description:
-      "Reveri is a short visual concept used to explore a more atmospheric palette and softer motion language.",
-    services: ["Brand exploration", "Art direction"],
-    stack: ["Typography", "Gradients", "Interface studies"],
-    metrics: [],
-    outcomes: ["Tested a softer visual language.", "Built a reusable mood around gradients and spacing."],
-    detailSections: [{ heading: "Idea", body: "A concise concept exploring softer product identity and digital atmosphere." }],
-    palette: { base: "#efd8f8", accent: "#db85d7", ink: "#221821" },
-  },
-  {
-    slug: "tripadvisor-concept",
-    title: "Tripadvisor Concept",
-    heroTitle: "Travel Browse",
-    client: "Self-Initiated",
-    category: "Project",
-    pageMode: "brief",
-    year: "2025",
-    duration: "Independent",
-    role: "Product Concept",
-    headline: "A travel browsing interface concept built around simple, fast discovery.",
-    summary:
-      "A compact concept exploring browsing, scanning, and destination discovery patterns.",
-    description:
-      "This concept focuses on fast comprehension and bold visual recall rather than a fully scoped product system.",
-    services: ["Product concept", "UI exploration"],
-    stack: ["Interface design", "Navigation patterns"],
-    metrics: [],
-    outcomes: ["Tested a more playful discovery UI.", "Explored icon-led scanning and compressed information blocks."],
-    detailSections: [{ heading: "Idea", body: "A short concept for travel discovery with strong visual recognition and simplified browsing." }],
-    palette: { base: "#c6ffe5", accent: "#20bf88", ink: "#112019" },
   },
   {
     slug: "brooklyn-org",

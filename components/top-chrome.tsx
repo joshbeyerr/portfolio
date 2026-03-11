@@ -2,19 +2,21 @@
 
 import Link from "next/link";
 import {
-  Ban,
-  Crosshair,
+  Circle,
   Globe,
-  Grab,
   Heart,
+  Music2,
   Moon,
   MousePointer2,
-  Music3,
   Orbit,
+  Pause,
+  Play,
   ScanSearch,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { useCursorMode } from "@/components/cursor-system";
+import { useSiteAudio } from "@/components/site-audio";
 import { navigationItems, type CursorMode } from "@/lib/site-data";
 
 type TopChromeProps = {
@@ -26,48 +28,56 @@ type SpotifyStatusResponse = {
   needsAuth?: boolean;
   playback?: {
     isPlaying: boolean;
+    trackUri: string | null;
     trackName: string;
     artistName: string;
     albumName: string;
     albumImageUrl: string | null;
     trackUrl: string | null;
+    previewUrl: string | null;
     progressMs: number | null;
     durationMs: number | null;
     playedAt: string | null;
   } | null;
 };
 
-const cursorStyleMap: Record<CursorMode, string> = {
-  default: "default",
-  crosshair: "crosshair",
-  grab: "grab",
-  zoom: "zoom-in",
-  alias: "alias",
-  "not-allowed": "not-allowed",
-  guitar: "url('/cursors/guitar-icon-cursor.png') 3 3, pointer",
-};
-
-  const cursorOptions: {
-    id: CursorMode;
-    label: string;
-    icon: typeof MousePointer2;
-    imageSrc?: string;
-  }[] = [
-    { id: "default", label: "Default pointer", icon: MousePointer2 },
-    { id: "crosshair", label: "Crosshair target", icon: Crosshair },
-    { id: "grab", label: "Grab hand", icon: Grab },
-    { id: "zoom", label: "Zoom lens", icon: ScanSearch },
-    { id: "alias", label: "Orbit alias", icon: Orbit },
-    { id: "not-allowed", label: "Block cursor", icon: Ban },
-    {
-      id: "guitar",
-      label: "Guitar cursor",
-      icon: MousePointer2,
-      imageSrc: "/cursors/guitar-icon-cursor.png",
-    },
-  ];
+const cursorOptions: {
+  id: CursorMode;
+  label: string;
+  icon: typeof MousePointer2;
+  description: string;
+}[] = [
+  {
+    id: "standard",
+    label: "Standard pointer",
+    icon: MousePointer2,
+    description: "Native system cursor.",
+  },
+  {
+    id: "magnetic",
+    label: "Magnetic cursor",
+    icon: Orbit,
+    description: "Pulled toward interactive elements.",
+  },
+  {
+    id: "project-preview",
+    label: "Project preview",
+    icon: ScanSearch,
+    description: "Shows project metadata on hover.",
+  },
+  {
+    id: "blur-glass",
+    label: "Blur glass",
+    icon: Circle,
+    description: "Soft glass lens with motion tilt.",
+  },
+];
 
 export function TopChrome({ activePath }: TopChromeProps) {
+  const { cursorMode, setCursorMode, customCursorEnabled } = useCursorMode();
+  const siteAudio = useSiteAudio();
+  const setSiteAudioAuthEnabled = siteAudio.setAuthEnabled;
+  const setSiteAudioTrack = siteAudio.setTrack;
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
       return window.localStorage.getItem("portfolio-theme") === "dark"
@@ -80,30 +90,19 @@ export function TopChrome({ activePath }: TopChromeProps) {
   const [activeTool, setActiveTool] = useState<"globe" | "cursor" | "music">(
     "globe",
   );
-  const [cursorMode, setCursorMode] = useState<CursorMode>("default");
   const [spotifyState, setSpotifyState] = useState<{
     loading: boolean;
+    loadedOnce: boolean;
     connected: boolean;
     needsAuth: boolean;
     playback: SpotifyStatusResponse["playback"];
   }>({
-    loading: false,
+    loading: true,
+    loadedOnce: false,
     connected: false,
     needsAuth: false,
     playback: null,
   });
-
-  useEffect(() => {
-    const cursorValue = cursorStyleMap[cursorMode];
-
-    document.documentElement.style.cursor = cursorValue;
-    document.body.style.cursor = cursorValue;
-
-    return () => {
-      document.documentElement.style.cursor = "default";
-      document.body.style.cursor = "default";
-    };
-  }, [cursorMode]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -111,16 +110,12 @@ export function TopChrome({ activePath }: TopChromeProps) {
   }, [theme]);
 
   useEffect(() => {
-    if (activeTool !== "music") {
-      return;
-    }
-
     let cancelled = false;
 
     async function loadSpotifyStatus() {
       setSpotifyState((current) => ({
         ...current,
-        loading: true,
+        loading: current.loadedOnce ? current.loading : true,
       }));
 
       try {
@@ -135,6 +130,7 @@ export function TopChrome({ activePath }: TopChromeProps) {
 
         setSpotifyState({
           loading: false,
+          loadedOnce: true,
           connected: Boolean(payload.connected),
           needsAuth: Boolean(payload.needsAuth),
           playback: payload.playback ?? null,
@@ -146,6 +142,7 @@ export function TopChrome({ activePath }: TopChromeProps) {
 
         setSpotifyState({
           loading: false,
+          loadedOnce: true,
           connected: false,
           needsAuth: true,
           playback: null,
@@ -155,15 +152,42 @@ export function TopChrome({ activePath }: TopChromeProps) {
 
     void loadSpotifyStatus();
 
+    const intervalId = window.setInterval(() => {
+      void loadSpotifyStatus();
+    }, 30000);
+
     return () => {
       cancelled = true;
+      window.clearInterval(intervalId);
     };
-  }, [activeTool]);
+  }, []);
+
+  useEffect(() => {
+    setSiteAudioAuthEnabled(
+      spotifyState.connected && !spotifyState.needsAuth,
+    );
+  }, [setSiteAudioAuthEnabled, spotifyState.connected, spotifyState.needsAuth]);
+
+  useEffect(() => {
+    const playback = spotifyState.playback;
+
+    if (!playback) {
+      setSiteAudioTrack(null);
+      return;
+    }
+
+    setSiteAudioTrack({
+      title: playback.trackName,
+      subtitle: `${playback.artistName} - ${playback.albumName}`,
+      uri: playback.trackUri,
+      openHref: playback.trackUrl,
+    });
+  }, [setSiteAudioTrack, spotifyState.playback]);
 
   const tickerText = useMemo(
     () =>
       [
-        "Hi, this is Josh's portfolio page - welcome.",
+        "Hi im Josh and this is my portfolio page, welcome.",
         "Built as a living creative tool and project canvas.",
       ].join("        "),
     [],
@@ -172,18 +196,6 @@ export function TopChrome({ activePath }: TopChromeProps) {
   const handleThemeToggle = () => {
     setTheme((current) => (current === "light" ? "dark" : "light"));
   };
-
-  const playbackProgress =
-    spotifyState.playback?.progressMs && spotifyState.playback?.durationMs
-      ? Math.min(
-          100,
-          Math.round(
-            (spotifyState.playback.progressMs /
-              spotifyState.playback.durationMs) *
-              100,
-          ),
-        )
-      : 0;
 
   return (
     <header className="landing-topbar">
@@ -227,107 +239,95 @@ export function TopChrome({ activePath }: TopChromeProps) {
                   className={`cursor-choice ${isActive ? "cursor-choice-active" : ""}`}
                   onClick={() => setCursorMode(option.id)}
                   aria-label={option.label}
-                  title={option.label}
+                  title={`${option.label}. ${option.description}`}
                 >
-                  {option.imageSrc ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={option.imageSrc}
-                      alt=""
-                      className="cursor-choice-image"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <Icon className="h-[13px] w-[13px]" strokeWidth={1.75} />
-                  )}
+                  <Icon className="h-[13px] w-[13px]" strokeWidth={1.75} />
                 </button>
               );
             })}
+            {!customCursorEnabled ? (
+              <div className="cursor-choice-note" aria-live="polite">
+                Motion cursors show on fine pointers only.
+              </div>
+            ) : null}
           </div>
         ) : null}
 
         {activeTool === "music" ? (
-          <div className="center-panel music-panel" aria-label="Now listening">
-            {spotifyState.loading ? (
+          <div className="center-panel music-panel music-panel-active" aria-label="Spotify playback">
+            <div className="music-panel-main">
+              {spotifyState.playback?.albumImageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={spotifyState.playback.albumImageUrl}
+                  alt={`${spotifyState.playback.albumName} cover art`}
+                  className="music-panel-art"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="music-panel-art music-panel-art-fallback" aria-hidden="true">
+                  <Music2 className="h-[14px] w-[14px]" strokeWidth={1.7} />
+                </div>
+              )}
               <div className="music-panel-copy">
-                <p className="music-panel-label">Spotify</p>
-                <p className="music-panel-title">Loading current playback...</p>
+                <p className="music-panel-label">Josh is listening to</p>
+                <p className="music-panel-title">
+                  {spotifyState.loading
+                    ? "Loading current track..."
+                    : spotifyState.needsAuth
+                      ? "Connect Spotify"
+                    : spotifyState.playback?.trackName ?? "Nothing playing right now"}
+                </p>
                 <p className="music-panel-meta">
-                  Checking what Josh is listening to.
+                  {spotifyState.loading
+                    ? "Checking what Josh is listening to."
+                    : spotifyState.needsAuth
+                      ? "Authorize Spotify again to restore playback and current-track sync."
+                    : spotifyState.playback
+                      ? `${spotifyState.playback.artistName} - ${spotifyState.playback.albumName}`
+                      : "No current or recent playback found."}
                 </p>
               </div>
-            ) : null}
+            </div>
 
-            {!spotifyState.loading && spotifyState.needsAuth ? (
-              <>
-                <div className="music-panel-copy">
-                  <p className="music-panel-label">Spotify</p>
-                  <p className="music-panel-title">Connect Spotify</p>
-                  <p className="music-panel-meta">
-                    Authorize once to show current or recent playback.
-                  </p>
-                </div>
-                <Link href="/api/spotify/login" className="music-panel-connect">
-                  Connect
-                </Link>
-              </>
-            ) : null}
-
-            {!spotifyState.loading &&
-            spotifyState.connected &&
-            spotifyState.playback ? (
-              <>
-                {spotifyState.playback.albumImageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={spotifyState.playback.albumImageUrl}
-                    alt={`${spotifyState.playback.albumName} cover art`}
-                    className="music-panel-art"
-                  />
+            <div className="music-panel-controls">
+              <div className="music-panel-actions">
+                {spotifyState.needsAuth ? (
+                  <Link href="/api/spotify/login" className="music-panel-open">
+                    Connect
+                  </Link>
                 ) : null}
-                <div className="music-panel-copy">
-                  <p className="music-panel-label">
-                    {spotifyState.playback.isPlaying
-                      ? "Now listening"
-                      : "Recently played"}
-                  </p>
-                  <p className="music-panel-title">
-                    {spotifyState.playback.trackName}
-                  </p>
-                  <p className="music-panel-meta">
-                    {spotifyState.playback.artistName} -{" "}
-                    {spotifyState.playback.albumName}
-                  </p>
-                </div>
-                <div className="music-panel-right">
-                  <div className="music-panel-progress" aria-hidden="true">
-                    <span style={{ width: `${playbackProgress}%` }} />
-                  </div>
-                  {spotifyState.playback.trackUrl ? (
-                    <Link
-                      href={spotifyState.playback.trackUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="music-panel-open"
-                    >
-                      Open
-                    </Link>
-                  ) : null}
-                </div>
-              </>
-            ) : null}
+                <button
+                  type="button"
+                  className="music-panel-play"
+                  onClick={() => void siteAudio.toggle()}
+                  disabled={
+                    spotifyState.loading ||
+                    spotifyState.needsAuth ||
+                    siteAudio.isUnavailable ||
+                    !siteAudio.track?.uri
+                  }
+                >
+                  {siteAudio.isPlaying ? (
+                    <Pause className="h-[11px] w-[11px] fill-current" strokeWidth={1.8} />
+                  ) : (
+                    <Play className="h-[11px] w-[11px] fill-current" strokeWidth={1.8} />
+                  )}
+                  {siteAudio.isPlaying ? "Pause" : "Play"}
+                </button>
 
-            {!spotifyState.loading &&
-            spotifyState.connected &&
-            !spotifyState.playback ? (
-              <div className="music-panel-copy">
-                <p className="music-panel-label">Spotify</p>
-                <p className="music-panel-title">No recent playback found</p>
-                <p className="music-panel-meta">
-                  Spotify is connected, but nothing recent was returned.
-                </p>
+                <Link
+                  href={siteAudio.track?.openHref ?? "#"}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className={`music-panel-open ${!siteAudio.track?.openHref ? "music-panel-open-disabled" : ""}`}
+                  aria-disabled={!siteAudio.track?.openHref}
+                  tabIndex={!siteAudio.track?.openHref ? -1 : 0}
+                >
+                  Open
+                </Link>
               </div>
-            ) : null}
+            </div>
           </div>
         ) : null}
       </div>
@@ -355,7 +355,7 @@ export function TopChrome({ activePath }: TopChromeProps) {
           aria-label="Music mode"
           onClick={() => setActiveTool("music")}
         >
-          <Music3 className="h-[12px] w-[12px]" strokeWidth={1.7} />
+          <Music2 className="h-[12px] w-[12px]" strokeWidth={1.7} />
         </button>
         <button
           type="button"

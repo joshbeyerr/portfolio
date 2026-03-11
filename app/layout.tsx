@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import "@fontsource/inter/index.css";
+import { CursorProvider } from "@/components/cursor-system";
+import { SiteAudioProvider } from "@/components/site-audio";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,7 +35,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        {children}
+        <SiteAudioProvider>
+          <CursorProvider>{children}</CursorProvider>
+        </SiteAudioProvider>
       </body>
     </html>
   );

@@ -9,15 +9,22 @@ const redirectUriFromEnv = process.env.SPOTIFY_REDIRECT_URI;
 const spotifyScopes = [
   "user-read-currently-playing",
   "user-read-recently-played",
+  "user-modify-playback-state",
+  "streaming",
+  "user-read-email",
+  "user-read-private",
 ];
 
 export type SpotifyPlayback = {
   isPlaying: boolean;
+  trackId: string | null;
+  trackUri: string | null;
   trackName: string;
   artistName: string;
   albumName: string;
   albumImageUrl: string | null;
   trackUrl: string | null;
+  previewUrl: string | null;
   progressMs: number | null;
   durationMs: number | null;
   playedAt: string | null;
@@ -118,9 +125,12 @@ function mapTrack(item: {
   progress_ms?: number;
   played_at?: string;
   item?: {
+    id?: string;
+    uri?: string;
     name: string;
     duration_ms: number;
     external_urls?: { spotify?: string };
+    preview_url?: string | null;
     album?: {
       name: string;
       images?: { url: string }[];
@@ -128,9 +138,12 @@ function mapTrack(item: {
     artists?: { name: string }[];
   };
   track?: {
+    id?: string;
+    uri?: string;
     name: string;
     duration_ms: number;
     external_urls?: { spotify?: string };
+    preview_url?: string | null;
     album?: {
       name: string;
       images?: { url: string }[];
@@ -146,11 +159,14 @@ function mapTrack(item: {
 
   return {
     isPlaying: Boolean(item.is_playing),
+    trackId: track.id ?? null,
+    trackUri: track.uri ?? null,
     trackName: track.name,
     artistName: track.artists?.map((artist) => artist.name).join(", ") ?? "Unknown artist",
     albumName: track.album?.name ?? "Unknown album",
     albumImageUrl: track.album?.images?.[0]?.url ?? null,
     trackUrl: track.external_urls?.spotify ?? null,
+    previewUrl: track.preview_url ?? null,
     progressMs: item.progress_ms ?? null,
     durationMs: track.duration_ms ?? null,
     playedAt: item.played_at ?? null,
@@ -175,9 +191,12 @@ export async function getSpotifyPlayback(refreshToken: string) {
       is_playing: boolean;
       progress_ms?: number;
       item?: {
+        id?: string;
+        uri?: string;
         name: string;
         duration_ms: number;
         external_urls?: { spotify?: string };
+        preview_url?: string | null;
         album?: {
           name: string;
           images?: { url: string }[];
@@ -216,9 +235,12 @@ export async function getSpotifyPlayback(refreshToken: string) {
     items?: Array<{
       played_at: string;
       track: {
+        id?: string;
+        uri?: string;
         name: string;
         duration_ms: number;
         external_urls?: { spotify?: string };
+        preview_url?: string | null;
         album?: {
           name: string;
           images?: { url: string }[];
@@ -229,4 +251,58 @@ export async function getSpotifyPlayback(refreshToken: string) {
   };
 
   return mapTrack(recentPayload.items?.[0] ?? {});
+}
+
+export async function getSpotifyAccessToken(refreshToken: string) {
+  return refreshSpotifyAccessToken(refreshToken);
+}
+
+export async function startSpotifyPlayback({
+  refreshToken,
+  deviceId,
+  trackUri,
+}: {
+  refreshToken: string;
+  deviceId: string;
+  trackUri: string;
+}) {
+  const accessToken = await refreshSpotifyAccessToken(refreshToken);
+
+  const transferResponse = await fetch(`${SPOTIFY_API_URL}/me/player`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      device_ids: [deviceId],
+      play: false,
+    }),
+    cache: "no-store",
+  });
+
+  if (!transferResponse.ok && transferResponse.status !== 204) {
+    const errorText = await transferResponse.text();
+    throw new Error(`Spotify transfer playback failed: ${errorText}`);
+  }
+
+  const playResponse = await fetch(
+    `${SPOTIFY_API_URL}/me/player/play?device_id=${encodeURIComponent(deviceId)}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        uris: [trackUri],
+      }),
+      cache: "no-store",
+    },
+  );
+
+  if (!playResponse.ok && playResponse.status !== 204) {
+    const errorText = await playResponse.text();
+    throw new Error(`Spotify start playback failed: ${errorText}`);
+  }
 }

@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+  type WheelEvent as ReactWheelEvent,
+} from "react";
 
 import {
   landingCarouselItems,
@@ -27,28 +35,190 @@ type CarouselBandProps = {
   onFocusItem: (item: LandingCarouselItem) => void;
 };
 
+type CarouselEntry =
+  | { type: "marker"; id: string; label: string }
+  | { type: "item"; item: LandingCarouselItem };
+
+function wrapOffset(offset: number, width: number) {
+  if (width <= 0) {
+    return 0;
+  }
+
+  return ((offset % width) + width) % width;
+}
+
 function CarouselBand({
   items,
   focusedItem,
   onFocusItem,
 }: CarouselBandProps) {
+  const shellRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const offsetRef = useRef(0);
+  const velocityRef = useRef(0.58);
+  const targetVelocityRef = useRef(0.58);
+  const sequenceWidthRef = useRef(0);
+  const lastFrameTimeRef = useRef(0);
+  const [isInteractive, setIsInteractive] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const workItems = items.filter((item) => item.group === "work");
   const projectItems = items.filter((item) => item.group === "project");
-  const sequence = [
-    { type: "marker" as const, id: "work-marker", label: "Work" },
-    ...workItems.map((item) => ({ type: "item" as const, item })),
-    { type: "marker" as const, id: "project-marker", label: "Projects" },
-    ...projectItems.map((item) => ({ type: "item" as const, item })),
-  ];
-  const loopItems = [...sequence, ...sequence];
+  const sequence: CarouselEntry[] = useMemo(
+    () => [
+      { type: "marker", id: "work-marker", label: "Work" },
+      ...workItems.map((item) => ({ type: "item" as const, item })),
+      { type: "marker", id: "project-marker", label: "Projects" },
+      ...projectItems.map((item) => ({ type: "item" as const, item })),
+    ],
+    [projectItems, workItems],
+  );
+  const loopItems = useMemo(() => [...sequence, ...sequence], [sequence]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) {
+      return;
+    }
+
+    const updateMeasurements = () => {
+      sequenceWidthRef.current = track.scrollWidth / 2;
+      offsetRef.current = wrapOffset(offsetRef.current, sequenceWidthRef.current);
+      track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+    };
+
+    updateMeasurements();
+
+    const resizeObserver = new ResizeObserver(updateMeasurements);
+    resizeObserver.observe(track);
+
+    const handleResize = () => {
+      updateMeasurements();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [loopItems.length]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) {
+      return;
+    }
+
+    const step = (time: number) => {
+      if (!lastFrameTimeRef.current) {
+        lastFrameTimeRef.current = time;
+      }
+
+      const delta = Math.min(32, time - lastFrameTimeRef.current) / 16.6667;
+      lastFrameTimeRef.current = time;
+
+      velocityRef.current +=
+        (targetVelocityRef.current - velocityRef.current) * 0.12;
+      offsetRef.current = wrapOffset(
+        offsetRef.current + velocityRef.current * delta,
+        sequenceWidthRef.current,
+      );
+      track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+      animationFrameRef.current = window.requestAnimationFrame(step);
+    };
+
+    animationFrameRef.current = window.requestAnimationFrame(step);
+
+    return () => {
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
+  const setInteractiveVelocityFromPointer = (
+    event: ReactPointerEvent<HTMLDivElement>,
+  ) => {
+    const shell = shellRef.current;
+    if (!shell) {
+      return;
+    }
+
+    const bounds = shell.getBoundingClientRect();
+    const ratio = (event.clientX - bounds.left) / bounds.width;
+    const normalized = (ratio - 0.5) * 2;
+    const deadZone = 0.14;
+    const adjusted =
+      Math.abs(normalized) < deadZone
+        ? 0
+        : (Math.abs(normalized) - deadZone) / (1 - deadZone) *
+          Math.sign(normalized);
+
+    targetVelocityRef.current = adjusted * 2.2;
+  };
+
+  const handlePointerEnter = () => {
+    setIsInteractive(true);
+    targetVelocityRef.current = 0;
+  };
+
+  const handlePointerLeave = () => {
+    setIsInteractive(false);
+    setHoveredIndex(null);
+    targetVelocityRef.current = 0.58;
+  };
+
+  const handleWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
+    if (!isInteractive) {
+      return;
+    }
+
+    event.preventDefault();
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY)
+      ? event.deltaX
+      : event.deltaY;
+    offsetRef.current = wrapOffset(
+      offsetRef.current + delta * 0.65,
+      sequenceWidthRef.current,
+    );
+    targetVelocityRef.current = delta * 0.018;
+  };
+
+  const getTileStateClassName = (index: number) => {
+    if (hoveredIndex === null) {
+      return "";
+    }
+
+    if (index === hoveredIndex) {
+      return "carousel-tile-hovered";
+    }
+
+    return "";
+  };
+
+  const getTilePush = (index: number) => {
+    if (hoveredIndex === null || index === hoveredIndex) {
+      return 0;
+    }
+
+    return index < hoveredIndex ? -54 : 54;
+  };
 
   return (
     <section className="landing-band">
       <div className="landing-band-header">
         <p className="landing-band-label">Work + Projects</p>
       </div>
-      <div className="carousel-shell">
-        <div className="carousel-track">
+      <div
+        ref={shellRef}
+        className={`carousel-shell ${isInteractive ? "carousel-shell-interactive" : ""}`}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        onPointerMove={setInteractiveVelocityFromPointer}
+        onWheel={handleWheel}
+      >
+        <div ref={trackRef} className="carousel-track">
           {loopItems.map((entry, index) =>
             entry.type === "marker" ? (
               <div
@@ -62,24 +232,47 @@ function CarouselBand({
               <Link
                 key={`${entry.item.id}-${index}`}
                 href={entry.item.href ?? "/"}
-                className={tileClassName(
-                  entry.item.variant,
-                  entry.item.size,
-                  entry.item.id,
-                )}
+                className={[
+                  tileClassName(
+                    entry.item.variant,
+                    entry.item.size,
+                    entry.item.id,
+                  ),
+                  getTileStateClassName(index),
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 style={
-                  entry.item.tileWidth && entry.item.tileHeight
-                    ? {
-                        width: `${entry.item.tileWidth}px`,
-                        height: `${entry.item.tileHeight}px`,
-                      }
-                    : undefined
+                  {
+                    ...(entry.item.tileWidth && entry.item.tileHeight
+                      ? {
+                          width: `${entry.item.tileWidth}px`,
+                          height: `${entry.item.tileHeight}px`,
+                        }
+                      : {}),
+                    "--carousel-push-x": `${getTilePush(index)}px`,
+                  } as CSSProperties
                 }
-                onMouseEnter={() => onFocusItem(entry.item)}
+                data-cursor-magnetic="true"
+                data-cursor-preview="true"
+                data-cursor-preview-title={entry.item.title}
+                data-cursor-preview-subtitle={entry.item.description}
+                data-cursor-preview-image={entry.item.image?.src}
+                data-cursor-preview-alt={entry.item.image?.alt}
+                data-cursor-preview-bg="#111111"
+                data-cursor-preview-accent="rgba(255,255,255,0.12)"
+                data-cursor-preview-ink="#f5f5f2"
+                onMouseEnter={() => {
+                  onFocusItem(entry.item);
+                  setHoveredIndex(index);
+                }}
+                onMouseLeave={() => setHoveredIndex(null)}
                 onFocus={() => onFocusItem(entry.item)}
               >
                 <div className="carousel-tile-inner">
-                  {entry.item.image && entry.item.variant !== "cidel" ? (
+                  {entry.item.image &&
+                  entry.item.variant !== "cidel" &&
+                  entry.item.variant !== "resyd" ? (
                     <img
                       src={entry.item.image.src}
                       alt={entry.item.image.alt}
@@ -121,10 +314,6 @@ function CarouselBand({
                     <p className="tile-wordmark-tight">allup</p>
                   ) : null}
 
-                  {entry.item.variant === "reveri" ? (
-                    <p className="tile-wordmark-soft">reveri</p>
-                  ) : null}
-
                   {entry.item.variant === "brooklyn" ? (
                     <div className="brooklyn-lockup">
                       <span>BROOKLYN</span>
@@ -136,6 +325,38 @@ function CarouselBand({
                     <div className="signal-lockup">
                       <span>D</span>
                       <span>eloe</span>
+                    </div>
+                  ) : null}
+
+                  {entry.item.variant === "resyd" ? (
+                    <div className="resyd-card">
+                      <div className="resyd-card-top">
+                        <div>
+                          <p className="resyd-card-brand">Get Resyd</p>
+                          <p className="resyd-card-meta">Automated reservation booking</p>
+                        </div>
+                        <div className="resyd-card-toggle" aria-hidden="true">
+                          <span />
+                        </div>
+                      </div>
+                      <div className="resyd-card-tabs" aria-hidden="true">
+                        <span className="resyd-card-tab resyd-card-tab-active">
+                          Form / Tasks
+                        </span>
+                        <span className="resyd-card-tab">How it works</span>
+                      </div>
+                      <div className="resyd-card-panel">
+                        <p className="resyd-card-title">Book Your Reservation</p>
+                        <div className="resyd-card-selected">
+                          <strong>Selected:</strong> Danny&apos;s Pizza Tavern
+                        </div>
+                        <div className="resyd-card-actions">
+                          <div className="resyd-card-action">Monitor Only</div>
+                          <div className="resyd-card-action resyd-card-action-primary">
+                            Auto-Book
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ) : null}
                 </div>

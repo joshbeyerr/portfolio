@@ -28,6 +28,13 @@ export function ProjectRail({ projects }: ProjectRailProps) {
         <Link
           href={`/projects/${activeProject.slug}`}
           className="hidden items-center gap-2 text-[13px] font-medium text-[var(--ink)] transition-opacity duration-150 hover:opacity-65 md:inline-flex"
+          data-cursor-magnetic="true"
+          data-cursor-preview="true"
+          data-cursor-preview-title={activeProject.title}
+          data-cursor-preview-subtitle={activeProject.summary}
+          data-cursor-preview-bg={activeProject.palette.base}
+          data-cursor-preview-accent={activeProject.palette.accent}
+          data-cursor-preview-ink={activeProject.palette.ink}
         >
           Open case study
           <ArrowUpRight className="h-[14px] w-[14px]" strokeWidth={1.5} />
@@ -44,6 +51,13 @@ export function ProjectRail({ projects }: ProjectRailProps) {
               type="button"
               onClick={() => setActiveProject(project)}
               className={`project-card ${isActive ? "project-card-active" : ""}`}
+              data-cursor-magnetic="true"
+              data-cursor-preview="true"
+              data-cursor-preview-title={project.title}
+              data-cursor-preview-subtitle={project.summary}
+              data-cursor-preview-bg={project.palette.base}
+              data-cursor-preview-accent={project.palette.accent}
+              data-cursor-preview-ink={project.palette.ink}
               style={
                 {
                   "--card-base": project.palette.base,
@@ -86,6 +100,13 @@ export function ProjectRail({ projects }: ProjectRailProps) {
             <Link
               href={`/projects/${activeProject.slug}`}
               className="inline-flex items-center gap-2 text-[13px] font-medium text-[var(--ink)] transition-opacity duration-150 hover:opacity-65"
+              data-cursor-magnetic="true"
+              data-cursor-preview="true"
+              data-cursor-preview-title={activeProject.title}
+              data-cursor-preview-subtitle={activeProject.summary}
+              data-cursor-preview-bg={activeProject.palette.base}
+              data-cursor-preview-accent={activeProject.palette.accent}
+              data-cursor-preview-ink={activeProject.palette.ink}
             >
               View full case study
               <ArrowUpRight className="h-[14px] w-[14px]" strokeWidth={1.5} />
