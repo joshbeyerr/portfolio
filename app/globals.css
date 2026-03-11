@@ -51,6 +51,7 @@ button {
     color 160ms cubic-bezier(.2, .8, .2, 1);
 }
 
+a,
 button {
   cursor: inherit;
 }
@@ -141,6 +142,7 @@ button {
   display: inline-flex;
   min-width: max-content;
   gap: 48px;
+  padding-left: 18px;
   padding-top: 8px;
   font-size: 11px;
   line-height: 1;
@@ -170,12 +172,20 @@ button {
   color: var(--ink);
 }
 
+.cursor-choice-image {
+  width: 11px;
+  height: 11px;
+  object-fit: contain;
+  display: block;
+}
+
 .cursor-choice:first-child {
   border-left: 0;
 }
 
 .cursor-choice-active {
   background: color-mix(in srgb, var(--ink) 7%, var(--surface));
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .music-panel {
@@ -284,14 +294,87 @@ button {
 }
 
 .landing-stage {
-  position: relative;
-  min-height: calc(100vh - 54px);
+  display: grid;
+  gap: 24px;
+  padding-top: clamp(92px, 18vh, 170px);
+  padding-bottom: 24px;
   overflow: hidden;
+}
+
+.landing-band {
+  display: grid;
+  gap: 18px;
+}
+
+.landing-band-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.landing-band-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding-left: 2px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 78%, var(--ink));
+}
+
+.landing-band-label::before {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: color-mix(in srgb, var(--line-soft) 80%, transparent);
+}
+
+.carousel-section-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 182px;
+  min-height: 120px;
+  padding-inline: 10px;
+  color: color-mix(in srgb, var(--muted) 68%, var(--ink));
+}
+
+.carousel-section-marker span {
+  position: relative;
+  display: inline-block;
+  padding: 10px 0;
+  font-size: clamp(1.15rem, 1.6vw, 1.55rem);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  animation: section-marker-drift 5.8s ease-in-out infinite;
+}
+
+.carousel-section-marker span::before,
+.carousel-section-marker span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 78px;
+  height: 1px;
+  background: color-mix(in srgb, var(--line-soft) 72%, transparent);
+  transform: translateX(-50%);
+}
+
+.carousel-section-marker span::before {
+  top: 0;
+}
+
+.carousel-section-marker span::after {
+  bottom: 0;
 }
 
 .carousel-shell {
   position: relative;
-  margin-top: clamp(128px, 25vh, 238px);
   overflow: hidden;
 }
 
@@ -345,6 +428,38 @@ button {
   position: relative;
   height: 100%;
   width: 100%;
+}
+
+.carousel-tile-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-tile-image {
+  background: #fafafa;
+}
+
+.carousel-tile-image .carousel-tile-img {
+  object-fit: contain;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.carousel-tile-image-bleed {
+  background: #d6d6d3;
+}
+
+.carousel-tile-image-bleed .carousel-tile-img {
+  object-fit: cover;
+  padding: 0;
+}
+
+.carousel-tile-kic-product-acquisition .carousel-tile-img {
+  padding: 20px 42px;
 }
 
 .carousel-tile-reveri {
@@ -517,6 +632,11 @@ button {
     linear-gradient(135deg, #fbfbfb 0%, #efefef 100%);
 }
 
+.carousel-tile-cidel .carousel-tile-img {
+  object-fit: cover;
+  padding: 0;
+}
+
 .signal-lockup {
   position: absolute;
   inset: 20px;
@@ -527,7 +647,7 @@ button {
 }
 
 .signal-lockup span:first-child {
-  font-size: 78px;
+  font-size: 58px;
   line-height: 0.8;
   letter-spacing: -0.08em;
 }
@@ -539,15 +659,18 @@ button {
 }
 
 .landing-caption {
-  position: absolute;
-  left: 0;
-  bottom: 4px;
   display: grid;
-  gap: 1px;
-  padding-left: 0;
+  gap: 3px;
+  padding-left: 2px;
   font-size: 11px;
   line-height: 1.4;
   color: var(--ink);
+}
+
+.landing-caption p:first-child {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .landing-caption p:last-child {
@@ -671,6 +794,18 @@ button {
   }
 }
 
+@keyframes section-marker-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.72;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
 @media (max-width: 1080px) {
   .landing-topbar {
     flex-wrap: wrap;
@@ -737,11 +872,40 @@ button {
   }
 
   .carousel-shell {
-    margin-top: 84px;
+    margin-top: 0;
   }
 
   .carousel-track {
     gap: 10px;
+  }
+
+  .landing-band {
+    gap: 14px;
+  }
+
+  .landing-band-label {
+    font-size: 12px;
+    gap: 10px;
+    letter-spacing: 0.22em;
+  }
+
+  .landing-band-label::before {
+    width: 24px;
+  }
+
+  .carousel-section-marker {
+    min-width: 120px;
+    min-height: 96px;
+  }
+
+  .carousel-section-marker span {
+    font-size: 0.95rem;
+    letter-spacing: 0.24em;
+  }
+
+  .carousel-section-marker span::before,
+  .carousel-section-marker span::after {
+    width: 54px;
   }
 
   .carousel-tile-hero {

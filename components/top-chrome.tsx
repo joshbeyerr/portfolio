@@ -44,20 +44,28 @@ const cursorStyleMap: Record<CursorMode, string> = {
   zoom: "zoom-in",
   alias: "alias",
   "not-allowed": "not-allowed",
+  guitar: "url('/cursors/guitar-icon-cursor.png') 3 3, pointer",
 };
 
-const cursorOptions: {
-  id: CursorMode;
-  label: string;
-  icon: typeof MousePointer2;
-}[] = [
-  { id: "default", label: "Default pointer", icon: MousePointer2 },
-  { id: "crosshair", label: "Crosshair target", icon: Crosshair },
-  { id: "grab", label: "Grab hand", icon: Grab },
-  { id: "zoom", label: "Zoom lens", icon: ScanSearch },
-  { id: "alias", label: "Orbit alias", icon: Orbit },
-  { id: "not-allowed", label: "Block cursor", icon: Ban },
-];
+  const cursorOptions: {
+    id: CursorMode;
+    label: string;
+    icon: typeof MousePointer2;
+    imageSrc?: string;
+  }[] = [
+    { id: "default", label: "Default pointer", icon: MousePointer2 },
+    { id: "crosshair", label: "Crosshair target", icon: Crosshair },
+    { id: "grab", label: "Grab hand", icon: Grab },
+    { id: "zoom", label: "Zoom lens", icon: ScanSearch },
+    { id: "alias", label: "Orbit alias", icon: Orbit },
+    { id: "not-allowed", label: "Block cursor", icon: Ban },
+    {
+      id: "guitar",
+      label: "Guitar cursor",
+      icon: MousePointer2,
+      imageSrc: "/cursors/guitar-icon-cursor.png",
+    },
+  ];
 
 export function TopChrome({ activePath }: TopChromeProps) {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -86,9 +94,13 @@ export function TopChrome({ activePath }: TopChromeProps) {
   });
 
   useEffect(() => {
-    document.body.style.cursor = cursorStyleMap[cursorMode];
+    const cursorValue = cursorStyleMap[cursorMode];
+
+    document.documentElement.style.cursor = cursorValue;
+    document.body.style.cursor = cursorValue;
 
     return () => {
+      document.documentElement.style.cursor = "default";
       document.body.style.cursor = "default";
     };
   }, [cursorMode]);
@@ -217,7 +229,17 @@ export function TopChrome({ activePath }: TopChromeProps) {
                   aria-label={option.label}
                   title={option.label}
                 >
-                  <Icon className="h-[13px] w-[13px]" strokeWidth={1.75} />
+                  {option.imageSrc ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={option.imageSrc}
+                      alt=""
+                      className="cursor-choice-image"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <Icon className="h-[13px] w-[13px]" strokeWidth={1.75} />
+                  )}
                 </button>
               );
             })}
