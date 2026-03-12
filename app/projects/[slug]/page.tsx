@@ -42,7 +42,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <SiteShell
-      activePath="/"
+      activePath={`/projects/${project.slug}`}
       eyebrow={project.category}
       title={project.heroTitle ?? project.title}
       intro={project.summary}

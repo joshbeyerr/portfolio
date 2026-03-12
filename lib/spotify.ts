@@ -45,16 +45,41 @@ export function getSpotifyAuthorizeUrl(origin: string, state: string) {
   url.searchParams.set("redirect_uri", getSpotifyRedirectUri(origin));
   url.searchParams.set("scope", spotifyScopes.join(" "));
   url.searchParams.set("state", state);
+  url.searchParams.set("show_dialog", "true");
 
   return url.toString();
 }
 
 export function getSpotifyRedirectUri(origin: string) {
-  return redirectUriFromEnv || `${origin}/api/spotify/callback`;
+  const fallbackRedirectUri = `${origin}/api/spotify/callback`;
+
+  if (!redirectUriFromEnv) {
+    return fallbackRedirectUri;
+  }
+
+  const configuredRedirectUris = redirectUriFromEnv
+    .split(/[\n,]/)
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  if (configuredRedirectUris.length === 0) {
+    return fallbackRedirectUri;
+  }
+
+  const requestOrigin = new URL(origin).origin;
+  const sameOriginRedirectUri = configuredRedirectUris.find((value) => {
+    try {
+      return new URL(value).origin === requestOrigin;
+    } catch {
+      return false;
+    }
+  });
+
+  return sameOriginRedirectUri ?? configuredRedirectUris[0] ?? fallbackRedirectUri;
 }
 
-export function getSpotifyRefreshToken(cookieRefreshToken?: string) {
-  return refreshTokenFromEnv || cookieRefreshToken || null;
+export function getSpotifyRefreshToken() {
+  return refreshTokenFromEnv || null;
 }
 
 function getBasicAuthHeader() {

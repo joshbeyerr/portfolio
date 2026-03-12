@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   getSpotifyRefreshToken,
@@ -6,7 +6,7 @@ import {
   isSpotifyConfigured,
 } from "@/lib/spotify";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   if (!isSpotifyConfigured()) {
     return NextResponse.json(
       {
@@ -17,9 +17,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const refreshToken = getSpotifyRefreshToken(
-    request.cookies.get("spotify_refresh_token")?.value,
-  );
+  const refreshToken = getSpotifyRefreshToken();
 
   if (!refreshToken) {
     return NextResponse.json({

@@ -25,15 +25,15 @@ export async function GET(request: NextRequest) {
     );
 
     const response = NextResponse.redirect(
-      new URL("/?spotify=connected", request.url),
+      new URL("/spotify/token", request.url),
     );
 
-    response.cookies.set("spotify_refresh_token", refreshToken, {
+    response.cookies.set("spotify_pending_refresh_token", refreshToken, {
       httpOnly: true,
       sameSite: "lax",
       secure: request.nextUrl.protocol === "https:",
       path: "/",
-      maxAge: 60 * 60 * 24 * 365,
+      maxAge: 60 * 10,
     });
     response.cookies.delete("spotify_oauth_state");
 

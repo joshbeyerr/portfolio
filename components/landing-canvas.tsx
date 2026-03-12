@@ -60,14 +60,17 @@ function CarouselBand({
 }: CarouselBandProps) {
   const shellRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const itemRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const animationFrameRef = useRef<number | null>(null);
   const offsetRef = useRef(0);
   const velocityRef = useRef(0.58);
   const targetVelocityRef = useRef(0.58);
   const sequenceWidthRef = useRef(0);
   const lastFrameTimeRef = useRef(0);
+  const centeredItemIdRef = useRef<string | null>(null);
+  const interactionIndexRef = useRef<number | null>(null);
   const [isInteractive, setIsInteractive] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [interactionIndex, setInteractionIndex] = useState<number | null>(null);
   const workItems = items.filter((item) => item.group === "work");
   const projectItems = items.filter((item) => item.group === "project");
   const sequence: CarouselEntry[] = useMemo(
@@ -81,6 +84,50 @@ function CarouselBand({
   );
   const loopItems = useMemo(() => [...sequence, ...sequence], [sequence]);
 
+  const syncCenteredItem = () => {
+    if (interactionIndexRef.current !== null) {
+      return;
+    }
+
+    const shell = shellRef.current;
+    if (!shell) {
+      return;
+    }
+
+    const shellBounds = shell.getBoundingClientRect();
+    const shellCenter = shellBounds.left + shellBounds.width / 2;
+
+    let closestItem: LandingCarouselItem | undefined;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    loopItems.forEach((entry, index) => {
+      if (entry.type !== "item") {
+        return;
+      }
+
+      const node = itemRefs.current[index];
+      if (!node) {
+        return;
+      }
+
+      const bounds = node.getBoundingClientRect();
+      const itemCenter = bounds.left + bounds.width / 2;
+      const distance = Math.abs(itemCenter - shellCenter);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestItem = entry.item;
+      }
+    });
+
+    if (!closestItem || centeredItemIdRef.current === closestItem.id) {
+      return;
+    }
+
+    centeredItemIdRef.current = closestItem.id;
+    onFocusItem(closestItem);
+  };
+
   useEffect(() => {
     const track = trackRef.current;
     if (!track) {
@@ -91,6 +138,7 @@ function CarouselBand({
       sequenceWidthRef.current = track.scrollWidth / 2;
       offsetRef.current = wrapOffset(offsetRef.current, sequenceWidthRef.current);
       track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+      syncCenteredItem();
     };
 
     updateMeasurements();
@@ -131,6 +179,7 @@ function CarouselBand({
         sequenceWidthRef.current,
       );
       track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+      syncCenteredItem();
       animationFrameRef.current = window.requestAnimationFrame(step);
     };
 
@@ -171,7 +220,8 @@ function CarouselBand({
 
   const handlePointerLeave = () => {
     setIsInteractive(false);
-    setHoveredIndex(null);
+    interactionIndexRef.current = null;
+    setInteractionIndex(null);
     targetVelocityRef.current = 0.58;
   };
 
@@ -192,11 +242,11 @@ function CarouselBand({
   };
 
   const getTileStateClassName = (index: number) => {
-    if (hoveredIndex === null) {
+    if (interactionIndex === null) {
       return "";
     }
 
-    if (index === hoveredIndex) {
+    if (index === interactionIndex) {
       return "carousel-tile-hovered";
     }
 
@@ -204,11 +254,11 @@ function CarouselBand({
   };
 
   const getTilePush = (index: number) => {
-    if (hoveredIndex === null || index === hoveredIndex) {
+    if (interactionIndex === null || index === interactionIndex) {
       return 0;
     }
 
-    return index < hoveredIndex ? -54 : 54;
+    return index < interactionIndex ? -54 : 54;
   };
 
   return (
@@ -237,6 +287,9 @@ function CarouselBand({
             ) : (
               <Link
                 key={`${entry.item.id}-${index}`}
+                ref={(node) => {
+                  itemRefs.current[index] = node;
+                }}
                 href={entry.item.href ?? "/"}
                 className={[
                   tileClassName(
@@ -270,11 +323,25 @@ function CarouselBand({
                 data-cursor-preview-accent="rgba(255,255,255,0.12)"
                 data-cursor-preview-ink="#f5f5f2"
                 onMouseEnter={() => {
+                  centeredItemIdRef.current = entry.item.id;
+                  interactionIndexRef.current = index;
                   onFocusItem(entry.item);
-                  setHoveredIndex(index);
+                  setInteractionIndex(index);
                 }}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onFocus={() => onFocusItem(entry.item)}
+                onMouseLeave={() => {
+                  interactionIndexRef.current = null;
+                  setInteractionIndex(null);
+                }}
+                onFocus={() => {
+                  centeredItemIdRef.current = entry.item.id;
+                  interactionIndexRef.current = index;
+                  onFocusItem(entry.item);
+                  setInteractionIndex(index);
+                }}
+                onBlur={() => {
+                  interactionIndexRef.current = null;
+                  setInteractionIndex(null);
+                }}
               >
                 <div className="carousel-tile-inner">
                   {entry.item.image && entry.item.variant !== "resyd" ? (

@@ -329,81 +329,82 @@ export function TopChrome({ activePath }: TopChromeProps) {
         ) : null}
 
         {activeTool === "music" ? (
-          <div className="center-panel music-panel music-panel-active" aria-label="Spotify playback">
-            <div className="music-panel-main">
-              {spotifyState.playback?.albumImageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={spotifyState.playback.albumImageUrl}
-                  alt={`${spotifyState.playback.albumName} cover art`}
-                  className="music-panel-art"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="music-panel-art music-panel-art-fallback" aria-hidden="true">
-                  <Music2 className="h-[14px] w-[14px]" strokeWidth={1.7} />
+          spotifyState.needsAuth ? (
+            <div
+              className="center-panel music-panel music-panel-active music-panel-connect-only"
+              aria-label="Connect Spotify"
+            >
+              <a href="/api/spotify/login" className="music-panel-open">
+                Connect Spotify
+              </a>
+            </div>
+          ) : (
+            <div className="center-panel music-panel music-panel-active" aria-label="Spotify playback">
+              <div className="music-panel-main">
+                {spotifyState.playback?.albumImageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={spotifyState.playback.albumImageUrl}
+                    alt={`${spotifyState.playback.albumName} cover art`}
+                    className="music-panel-art"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="music-panel-art music-panel-art-fallback" aria-hidden="true">
+                    <Music2 className="h-[14px] w-[14px]" strokeWidth={1.7} />
+                  </div>
+                )}
+                <div className="music-panel-copy">
+                  <p className="music-panel-label">Josh is listening to</p>
+                  <p className="music-panel-title">
+                    {spotifyState.loading
+                      ? "Loading current track..."
+                      : spotifyState.playback?.trackName ?? "Nothing playing right now"}
+                  </p>
+                  <p className="music-panel-meta">
+                    {spotifyState.loading
+                      ? "Checking what Josh is listening to."
+                      : spotifyState.playback
+                        ? `${spotifyState.playback.artistName} - ${spotifyState.playback.albumName}`
+                        : "No current or recent playback found."}
+                  </p>
                 </div>
-              )}
-              <div className="music-panel-copy">
-                <p className="music-panel-label">Josh is listening to</p>
-                <p className="music-panel-title">
-                  {spotifyState.loading
-                    ? "Loading current track..."
-                    : spotifyState.needsAuth
-                      ? "Connect Spotify"
-                    : spotifyState.playback?.trackName ?? "Nothing playing right now"}
-                </p>
-                <p className="music-panel-meta">
-                  {spotifyState.loading
-                    ? "Checking what Josh is listening to."
-                    : spotifyState.needsAuth
-                      ? "Authorize Spotify again to restore playback and current-track sync."
-                    : spotifyState.playback
-                      ? `${spotifyState.playback.artistName} - ${spotifyState.playback.albumName}`
-                      : "No current or recent playback found."}
-                </p>
               </div>
-            </div>
 
-            <div className="music-panel-controls">
-              <div className="music-panel-actions">
-                {spotifyState.needsAuth ? (
-                  <Link href="/api/spotify/login" className="music-panel-open">
-                    Connect
+              <div className="music-panel-controls">
+                <div className="music-panel-actions">
+                  <button
+                    type="button"
+                    className="music-panel-play"
+                    onClick={() => void siteAudio.toggle()}
+                    disabled={
+                      spotifyState.loading ||
+                      siteAudio.isUnavailable ||
+                      !siteAudio.track?.uri
+                    }
+                  >
+                    {siteAudio.isPlaying ? (
+                      <Pause className="h-[11px] w-[11px] fill-current" strokeWidth={1.8} />
+                    ) : (
+                      <Play className="h-[11px] w-[11px] fill-current" strokeWidth={1.8} />
+                    )}
+                    {siteAudio.isPlaying ? "Pause" : "Play"}
+                  </button>
+
+                  <Link
+                    href={siteAudio.track?.openHref ?? "#"}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className={`music-panel-open ${!siteAudio.track?.openHref ? "music-panel-open-disabled" : ""}`}
+                    aria-disabled={!siteAudio.track?.openHref}
+                    tabIndex={!siteAudio.track?.openHref ? -1 : 0}
+                  >
+                    Open
                   </Link>
-                ) : null}
-                <button
-                  type="button"
-                  className="music-panel-play"
-                  onClick={() => void siteAudio.toggle()}
-                  disabled={
-                    spotifyState.loading ||
-                    spotifyState.needsAuth ||
-                    siteAudio.isUnavailable ||
-                    !siteAudio.track?.uri
-                  }
-                >
-                  {siteAudio.isPlaying ? (
-                    <Pause className="h-[11px] w-[11px] fill-current" strokeWidth={1.8} />
-                  ) : (
-                    <Play className="h-[11px] w-[11px] fill-current" strokeWidth={1.8} />
-                  )}
-                  {siteAudio.isPlaying ? "Pause" : "Play"}
-                </button>
-
-                <Link
-                  href={siteAudio.track?.openHref ?? "#"}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className={`music-panel-open ${!siteAudio.track?.openHref ? "music-panel-open-disabled" : ""}`}
-                  aria-disabled={!siteAudio.track?.openHref}
-                  tabIndex={!siteAudio.track?.openHref ? -1 : 0}
-                >
-                  Open
-                </Link>
+                </div>
               </div>
             </div>
-          </div>
+          )
         ) : null}
       </div>
 

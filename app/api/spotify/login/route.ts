@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 import {
   getSpotifyAuthorizeUrl,
-  getSpotifyRedirectUri,
   isSpotifyConfigured,
 } from "@/lib/spotify";
 
@@ -17,14 +16,6 @@ export async function GET(request: NextRequest) {
   }
 
   const requestOrigin = request.nextUrl.origin;
-  const redirectOrigin = new URL(getSpotifyRedirectUri(requestOrigin)).origin;
-
-  // Force the OAuth flow onto the same host as the registered redirect URI.
-  // This avoids localhost <-> 127.0.0.1 cookie/state mismatches during auth.
-  if (requestOrigin !== redirectOrigin) {
-    return NextResponse.redirect(`${redirectOrigin}/api/spotify/login`);
-  }
-
   const state = randomUUID();
   const redirectUrl = getSpotifyAuthorizeUrl(requestOrigin, state);
 
