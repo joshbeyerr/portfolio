@@ -277,18 +277,7 @@ function CarouselBand({
                 onFocus={() => onFocusItem(entry.item)}
               >
                 <div className="carousel-tile-inner">
-                  {entry.item.image &&
-                  entry.item.variant !== "cidel" &&
-                  entry.item.variant !== "resyd" ? (
-                    <img
-                      src={entry.item.image.src}
-                      alt={entry.item.image.alt}
-                      className="carousel-tile-img"
-                      loading="lazy"
-                    />
-                  ) : null}
-
-                  {entry.item.variant === "cidel" && entry.item.image ? (
+                  {entry.item.image && entry.item.variant !== "resyd" ? (
                     <img
                       src={entry.item.image.src}
                       alt={entry.item.image.alt}
@@ -337,10 +326,19 @@ function CarouselBand({
 
                   {entry.item.variant === "resyd" ? (
                     <div className="resyd-card">
-                      <p className="resyd-card-wordmark">
-                        <span>Get</span>
-                        <strong>Resyd</strong>
-                      </p>
+                      <div className="resyd-card-shell" aria-hidden="true">
+                        <span className="resyd-card-topline" />
+                        <div className="resyd-card-body">
+                          <p className="resyd-card-wordmark">
+                            <span>Get</span>
+                            <strong>Resyd</strong>
+                          </p>
+                          <p className="resyd-card-subtitle">
+                            Automated Resy Reservation Booking
+                          </p>
+                        </div>
+                        <span className="resyd-card-divider" />
+                      </div>
                     </div>
                   ) : null}
                 </div>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">WesternU AI logo</title>
+  <desc id="desc">Transparent WesternU AI logo with a blue-to-violet gradient circle and white AI lettering.</desc>
+  <defs>
+    <linearGradient id="westernuaiGradient" x1="264" y1="185" x2="842" y2="760" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#75bff4" />
+      <stop offset="1" stop-color="#8779ec" />
+    </linearGradient>
+  </defs>
+  <g>
+    <circle cx="618" cy="432" r="338" fill="url(#westernuaiGradient)" />
+    <path
+      fill="#75b7ef"
+      d="M82 198h115l112 566 144-566h107L372 890H242L82 198Z"
+    />
+    <path
+      fill="#fff"
+      fill-rule="evenodd"
+      d="M452 198h115l214 692H664l-43-131H467l-38 131H315l137-445h111L526 320 467 536h120L452 198Z"
+    />
+    <rect x="704" y="198" width="114" height="692" fill="#fff" />
+    <path
+      fill="#fff"
+      d="M334 707c63 46 145 71 241 71 107 0 201-30 279-92l-36 129c-71 49-160 74-265 74-103 0-191-25-263-76l44-106Z"
+    />
+  </g>
+</svg>

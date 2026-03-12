@@ -122,7 +122,7 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     group: "project",
     href: "/projects/westernu-ai",
     image: {
-      src: "/carousel/westernuai_logo.jpg",
+      src: "/carousel/westernuai_logo_transparent.png",
       alt: "WesternU AI",
     },
     variant: "image",
@@ -237,11 +237,14 @@ export const landingCarouselItems: LandingCarouselItem[] = [
     group: "work",
     href: "/projects/cidel",
     image: {
-      src: "/carousel/Cidel.jpg",
+      src: "/carousel/cidel.svg",
       alt: "Cidel Asset Management",
     },
-    variant: "cidel",
+    variant: "image",
     size: "square",
+    tileWidth: 164,
+    tileHeight: 164,
+    tileStyle: "logo",
   },
   {
     id: "kic-product-acquisition",
