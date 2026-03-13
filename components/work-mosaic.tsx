@@ -609,7 +609,7 @@ function FeatureWorkCard({
                 <div className={styles.lapisShotStage}>
                   <div className={styles.lapisShotFrame}>
                     <Image
-                      src="/carousel/lapis.png"
+                      src="/carousel/Lapis.png"
                       alt="Lapis product interface preview"
                       width={2000}
                       height={800}
