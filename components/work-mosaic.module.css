@@ -1,0 +1,1795 @@
+.pageShell {
+  width: min(100%, 1520px);
+  margin: 0 auto;
+  padding: 84px 14px 56px;
+}
+
+.eyebrow,
+.featureEyebrow,
+.contactLabel {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.eyebrow,
+.contactLabel {
+  color: color-mix(in srgb, var(--muted) 82%, var(--ink));
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: minmax(24px, auto);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.topCluster,
+.bottomCluster {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: minmax(24px, auto);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.cardLink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: #f5f5f5;
+  padding: 32px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 180ms cubic-bezier(.2, .8, .2, 1),
+    box-shadow 180ms cubic-bezier(.2, .8, .2, 1),
+    border-color 180ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.cardLink:hover .card,
+.cardLink:focus-visible .card,
+.card:hover {
+  transform: scale(1.012);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+.cardLink:focus-visible {
+  outline: none;
+}
+
+.aboutCard {
+  grid-column: 1 / span 6;
+  grid-row: 1 / span 8;
+  justify-content: space-between;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(241, 241, 239, 0.84));
+}
+
+.timeCard {
+  grid-column: 7 / span 6;
+  grid-row: 1 / span 5;
+  gap: 10px;
+  padding-top: 28px;
+  padding-bottom: 26px;
+}
+
+.contactCard {
+  grid-column: 7 / span 3;
+  grid-row: 6 / span 3;
+  gap: 12px;
+  justify-content: flex-start;
+  padding-top: 18px;
+  padding-bottom: 24px;
+}
+
+.templateCard {
+  grid-column: 10 / span 3;
+  grid-row: 6 / span 3;
+  gap: 12px;
+  justify-content: flex-start;
+  padding: 18px 20px 20px;
+}
+
+.tdCard {
+  grid-column: 1 / span 7;
+  grid-row: 1 / span 12;
+}
+
+.resydCard {
+  grid-column: 8 / span 5;
+  grid-row: 13 / span 9;
+}
+
+.lapisCard {
+  grid-column: 8 / span 5;
+  grid-row: 1 / span 12;
+}
+
+.inBetweenCard {
+  grid-column: 1 / span 7;
+  grid-row: 13 / span 10;
+}
+
+.cidelCard {
+  grid-column: 1 / span 6;
+  grid-row: 1 / span 6;
+}
+
+.kicCard {
+  grid-column: 8 / span 5;
+  grid-row: 22 / span 1;
+}
+
+.cohereCard {
+  grid-column: 10 / span 3;
+  grid-row: 1 / span 3;
+}
+
+.westernuCard {
+  grid-column: 10 / span 3;
+  grid-row: 4 / span 3;
+}
+
+.deloeCard {
+  grid-column: 7 / span 3;
+  grid-row: 1 / span 3;
+}
+
+.photoAlbumCard {
+  grid-column: 7 / span 3;
+  grid-row: 4 / span 3;
+}
+
+.aboutLead {
+  display: grid;
+  gap: 12px;
+  max-width: 48ch;
+}
+
+.aboutTitle {
+  margin: 0;
+  max-width: 15ch;
+  font-size: clamp(1.75rem, 2.35vw, 2.35rem);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.aboutBody {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 15px;
+  line-height: 1.78;
+  color: color-mix(in srgb, var(--ink) 82%, white);
+}
+
+.aboutList {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.72;
+  color: var(--muted);
+}
+
+.aboutList li {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.aboutList li::before {
+  content: ">";
+  display: block;
+  padding-top: 1px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.72;
+  color: color-mix(in srgb, var(--ink) 72%, white);
+  opacity: 0.9;
+}
+
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 0;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.66);
+  font-size: 14px;
+  color: color-mix(in srgb, var(--ink) 78%, white);
+}
+
+.compactHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.timeHeader {
+  align-items: flex-start;
+}
+
+.microBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 76%, var(--ink));
+}
+
+.microBadgeCopied {
+  border-color: color-mix(in srgb, #4e84ff 30%, rgba(0, 0, 0, 0.1));
+  color: color-mix(in srgb, #4e84ff 72%, var(--ink));
+}
+
+.microBadgeInner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 14px;
+}
+
+.microBadgeText {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeBlock {
+  display: grid;
+  gap: 2px;
+  justify-items: end;
+  text-align: right;
+}
+
+.timeValue {
+  margin: 0;
+  font-size: clamp(1.45rem, 1.9vw, 1.85rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+  color: var(--ink);
+}
+
+.timeDate {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.timeNotes {
+  display: grid;
+  gap: 8px;
+  margin-top: -2px;
+}
+
+.timeNotes p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.68;
+  color: color-mix(in srgb, var(--ink) 86%, white);
+}
+
+.contactIntro {
+  margin: 0;
+  max-width: 22ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--ink) 80%, white);
+}
+
+.contactActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.weatherCard {
+  isolation: isolate;
+  gap: 16px;
+  color: #f7f8fc;
+  border-color: rgba(14, 20, 36, 0.08);
+  box-shadow:
+    0 18px 30px rgba(17, 24, 39, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition:
+    transform 220ms cubic-bezier(.2, .8, .2, 1),
+    box-shadow 220ms cubic-bezier(.2, .8, .2, 1),
+    filter 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.weatherCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0)),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 34%);
+  pointer-events: none;
+}
+
+.weatherBackdrop,
+.weatherBody,
+.weatherFooter,
+.weatherCard .compactHeader {
+  position: relative;
+  z-index: 1;
+}
+
+.weatherBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.weatherGlow,
+.weatherOrb,
+.weatherClouds,
+.weatherGrain {
+  position: absolute;
+  inset: auto;
+  transition:
+    transform 280ms cubic-bezier(.22, 1, .36, 1),
+    opacity 280ms cubic-bezier(.22, 1, .36, 1),
+    filter 280ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.weatherGlow {
+  top: -24px;
+  right: -10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  filter: blur(18px);
+  opacity: 0.62;
+}
+
+.weatherOrb {
+  top: 22px;
+  right: 24px;
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.22) 42%, rgba(255, 255, 255, 0.04) 72%),
+    rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 18px 36px rgba(13, 18, 30, 0.18);
+  opacity: 0.92;
+}
+
+.weatherClouds {
+  left: -12px;
+  right: -16px;
+  bottom: 28px;
+  height: 48px;
+  opacity: 0.54;
+  animation: weather-drift 18s ease-in-out infinite;
+}
+
+.weatherClouds span {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  filter: blur(1px);
+}
+
+.weatherClouds span:nth-child(1) {
+  left: 6px;
+  bottom: 8px;
+  width: 88px;
+  height: 24px;
+}
+
+.weatherClouds span:nth-child(2) {
+  right: 24px;
+  bottom: 18px;
+  width: 72px;
+  height: 22px;
+}
+
+.weatherClouds span:nth-child(3) {
+  left: 74px;
+  bottom: 22px;
+  width: 46px;
+  height: 16px;
+}
+
+.weatherGrain {
+  inset: 0;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 36%),
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), transparent 26%),
+    radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.06), transparent 24%);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+}
+
+.weatherEyebrow {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(246, 248, 252, 0.78);
+}
+
+.weatherBadge {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(250, 252, 255, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.weatherBody {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 88px;
+}
+
+.weatherPrimary {
+  display: grid;
+  gap: 8px;
+  align-content: end;
+}
+
+.weatherTemperature {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.7rem);
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+  color: #fff;
+}
+
+.weatherCondition {
+  margin: 0;
+  max-width: 16ch;
+  font-size: 13px;
+  line-height: 1.3;
+  color: rgba(248, 250, 255, 0.9);
+}
+
+.weatherIconFrame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    transform 280ms cubic-bezier(.22, 1, .36, 1),
+    background-color 280ms cubic-bezier(.22, 1, .36, 1),
+    box-shadow 280ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.weatherFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.weatherMeta,
+.weatherCaption {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.weatherMeta {
+  color: rgba(249, 251, 255, 0.88);
+}
+
+.weatherCaption {
+  color: rgba(245, 247, 252, 0.68);
+}
+
+.weatherLoading .weatherTemperature,
+.weatherLoading .weatherCondition,
+.weatherLoading .weatherMeta,
+.weatherLoading .weatherCaption {
+  animation: weather-pulse 1.8s ease-in-out infinite;
+}
+
+.weatherCard:hover,
+.weatherCard:focus-within {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow:
+    0 28px 42px rgba(17, 24, 39, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.weatherCard:hover .weatherGlow,
+.weatherCard:focus-within .weatherGlow {
+  transform: scale(1.16);
+  opacity: 0.84;
+  filter: blur(22px);
+}
+
+.weatherCard:hover .weatherOrb,
+.weatherCard:focus-within .weatherOrb {
+  transform: translate3d(-3px, -10px, 0) scale(1.12);
+}
+
+.weatherCard:hover .weatherClouds,
+.weatherCard:focus-within .weatherClouds {
+  transform: translateX(12px);
+  opacity: 0.72;
+  animation-duration: 9s;
+}
+
+.weatherCard:hover .weatherIconFrame,
+.weatherCard:focus-within .weatherIconFrame {
+  transform: translateY(-4px) rotate(-5deg) scale(1.06);
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 18px 26px rgba(13, 18, 30, 0.16);
+}
+
+.weatherClear {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 32%),
+    linear-gradient(160deg, #66a7ff 0%, #81c8ff 38%, #b7e2ff 100%);
+}
+
+.weatherPartlyCloudy {
+  background:
+    radial-gradient(circle at 80% 12%, rgba(255, 244, 196, 0.46), rgba(255, 255, 255, 0) 34%),
+    linear-gradient(160deg, #547fc3 0%, #7ea5d8 44%, #c8d8ee 100%);
+}
+
+.weatherCloudy {
+  background:
+    radial-gradient(circle at 86% 12%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 32%),
+    linear-gradient(165deg, #566780 0%, #7b8ca1 46%, #b4c0cd 100%);
+}
+
+.weatherFog {
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(165deg, #7b8593 0%, #a9b2bd 48%, #d4dae2 100%);
+}
+
+.weatherRain {
+  background:
+    radial-gradient(circle at 82% 16%, rgba(163, 196, 255, 0.22), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(165deg, #24456f 0%, #3a628f 46%, #6f89aa 100%);
+}
+
+.weatherSnow {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 28%),
+    linear-gradient(165deg, #667790 0%, #8ea0b5 40%, #d6dfe9 100%);
+}
+
+.weatherStorm {
+  background:
+    radial-gradient(circle at 76% 20%, rgba(255, 214, 102, 0.24), rgba(255, 255, 255, 0) 26%),
+    linear-gradient(165deg, #1f2742 0%, #3b4566 44%, #69728f 100%);
+}
+
+.weatherNight {
+  background:
+    radial-gradient(circle at 78% 14%, rgba(255, 239, 183, 0.22), rgba(255, 255, 255, 0) 26%),
+    linear-gradient(165deg, #111b34 0%, #1f3059 44%, #3f5d8a 100%);
+}
+
+.weatherRain .weatherClouds,
+.weatherStorm .weatherClouds,
+.weatherSnow .weatherClouds,
+.weatherFog .weatherClouds {
+  opacity: 0.66;
+}
+
+.weatherRain .weatherGrain,
+.weatherStorm .weatherGrain {
+  background-image:
+    linear-gradient(102deg, transparent 0 46.8%, rgba(220, 234, 248, 0.14) 46.8% 47.5%, transparent 47.5% 100%),
+    linear-gradient(101deg, transparent 0 47.1%, rgba(255, 255, 255, 0.08) 47.1% 47.6%, transparent 47.6% 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%);
+  background-position: 0 0, 14px -20px, 0 0;
+  background-size: 16px 18px, 22px 24px, 100% 100%;
+  opacity: 0.16;
+  animation: weather-rain 4.6s linear infinite;
+  will-change: background-position, opacity;
+  mix-blend-mode: normal;
+}
+
+.weatherRain:hover .weatherGrain,
+.weatherRain:focus-within .weatherGrain {
+  opacity: 0.24;
+  animation-duration: 2.7s;
+}
+
+.weatherRain:hover .weatherClouds,
+.weatherRain:focus-within .weatherClouds {
+  transform: translateX(10px) translateY(-1px);
+  opacity: 0.8;
+  animation-duration: 6.4s;
+}
+
+.weatherSnow .weatherGrain {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.58) 0 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 1px, transparent 1px);
+  background-position: 0 0, 18px 18px;
+  background-size: 28px 28px, 40px 40px;
+  opacity: 0.34;
+  animation: weather-snow 12s linear infinite;
+  will-change: background-position, opacity;
+}
+
+.weatherSnow:hover .weatherGrain,
+.weatherSnow:focus-within .weatherGrain {
+  opacity: 0.7;
+  animation-duration: 2.4s;
+}
+
+.weatherSnow:hover,
+.weatherSnow:focus-within {
+  filter: saturate(1.08) brightness(1.08);
+}
+
+.weatherSnow:hover .weatherClouds,
+.weatherSnow:focus-within .weatherClouds {
+  transform: translateX(20px) translateY(-4px) scale(1.03);
+  opacity: 0.92;
+  animation-duration: 4.2s;
+}
+
+.weatherSnow:hover .weatherOrb,
+.weatherSnow:focus-within .weatherOrb {
+  transform: translate3d(-4px, -14px, 0) scale(1.18);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.22),
+    0 0 34px rgba(235, 245, 255, 0.24),
+    0 24px 42px rgba(13, 18, 30, 0.24);
+}
+
+.weatherSnow:hover .weatherIconFrame,
+.weatherSnow:focus-within .weatherIconFrame {
+  transform: translateY(-7px) rotate(-8deg) scale(1.12);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 22px 30px rgba(13, 18, 30, 0.18);
+}
+
+.weatherFog .weatherGrain {
+  opacity: 0.2;
+  filter: blur(4px);
+}
+
+.weatherFog:hover .weatherGrain,
+.weatherFog:focus-within .weatherGrain {
+  opacity: 0.3;
+  filter: blur(6px);
+}
+
+.weatherNight .weatherOrb {
+  background:
+    radial-gradient(circle at 35% 32%, rgba(255, 255, 255, 0.72), rgba(255, 250, 214, 0.48) 36%, rgba(255, 255, 255, 0.08) 66%),
+    rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 16px 34px rgba(5, 10, 25, 0.28);
+}
+
+.weatherClear:hover .weatherOrb,
+.weatherClear:focus-within .weatherOrb,
+.weatherPartlyCloudy:hover .weatherOrb,
+.weatherPartlyCloudy:focus-within .weatherOrb,
+.weatherNight:hover .weatherOrb,
+.weatherNight:focus-within .weatherOrb {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 0 28px rgba(255, 244, 196, 0.26),
+    0 20px 38px rgba(13, 18, 30, 0.22);
+}
+
+.weatherCloudy:hover .weatherClouds,
+.weatherCloudy:focus-within .weatherClouds,
+.weatherPartlyCloudy:hover .weatherClouds,
+.weatherPartlyCloudy:focus-within .weatherClouds,
+.weatherFog:hover .weatherClouds,
+.weatherFog:focus-within .weatherClouds {
+  animation-duration: 7.5s;
+  opacity: 0.82;
+}
+
+.weatherStorm:hover,
+.weatherStorm:focus-within {
+  filter: saturate(1.08) brightness(1.05);
+}
+
+.weatherStorm:hover .weatherGlow,
+.weatherStorm:focus-within .weatherGlow {
+  opacity: 0.92;
+  filter: blur(24px);
+}
+
+.weatherStorm:hover .weatherIconFrame,
+.weatherStorm:focus-within .weatherIconFrame {
+  transform: translateY(-5px) rotate(-8deg) scale(1.08);
+}
+
+.contactButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.68);
+  color: color-mix(in srgb, var(--ink) 88%, white);
+  transition:
+    transform 180ms cubic-bezier(.2, .8, .2, 1),
+    background-color 180ms cubic-bezier(.2, .8, .2, 1),
+    border-color 180ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.contactButton:hover,
+.contactButton:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(0, 0, 0, 0.22);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.contactButtonCopied {
+  background: color-mix(in srgb, var(--surface) 88%, rgba(78, 132, 255, 0.1));
+  border-color: color-mix(in srgb, #4e84ff 24%, rgba(0, 0, 0, 0.04));
+}
+
+.contactIconWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.contactIconFace {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactGlyph {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.featureCard {
+  justify-content: space-between;
+}
+
+.tdFeatureCard {
+  color: var(--project-ink, var(--ink));
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 34%),
+    linear-gradient(180deg, var(--project-base, #f5f5f5), color-mix(in srgb, var(--project-base, #f5f5f5) 86%, white));
+}
+
+.neutralFeatureCard {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 38%),
+    #f5f5f5;
+}
+
+.featureMain {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(186px, 0.84fr);
+  gap: 20px;
+  height: 100%;
+}
+
+.featureCopy {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.lapisTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.featureAside {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.featureEyebrow {
+  color: color-mix(in srgb, currentColor 58%, white);
+}
+
+.featureTitle {
+  margin: 0;
+  font-size: clamp(1.9rem, 2.75vw, 2.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.featureBody {
+  margin: 0;
+  max-width: 28ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, currentColor 78%, white);
+}
+
+.lapisShotWrap {
+  position: relative;
+  margin-top: 10px;
+  padding-top: 8px;
+}
+
+.lapisShotStage {
+  position: relative;
+  width: min(100%, 520px);
+  margin-left: -8px;
+  transform: perspective(1200px) rotateX(12deg) rotateY(7deg) rotateZ(-3deg) translateX(42px);
+  transform-style: preserve-3d;
+}
+
+.lapisShotFrame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.8) inset,
+    0 16px 28px rgba(12, 17, 28, 0.1);
+}
+
+.lapisShotImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 22px;
+  filter:
+    drop-shadow(0 10px 14px rgba(10, 16, 28, 0.08))
+    drop-shadow(0 18px 28px rgba(10, 16, 28, 0.1));
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 78%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 78%, rgba(0, 0, 0, 0) 100%);
+}
+
+.metricStack {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.lapisInlineLogo {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.lapisInlineLogoImage {
+  object-fit: contain;
+  transform: scale(0.88);
+}
+
+.metricCard {
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.metricCard p,
+.metricCard strong {
+  margin: 0;
+}
+
+.metricCard p {
+  font-size: 11px;
+  color: color-mix(in srgb, currentColor 55%, white);
+}
+
+.metricCard strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.28rem;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.lapisCard .featureMain {
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 0.7fr);
+  gap: 18px;
+}
+
+.lapisCard .featureCopy {
+  grid-template-rows: auto auto auto 1fr;
+}
+
+.lapisCard .featureAside {
+  padding-top: 6px;
+}
+
+.lapisCard .metricStack {
+  gap: 8px;
+}
+
+.lapisCard .metricCard {
+  padding: 12px 16px;
+}
+
+.lapisCard .metricCard p {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lapisCard .metricCard strong {
+  margin-top: 6px;
+  font-size: 1.02rem;
+  line-height: 1.12;
+}
+
+.lapisCard .lapisShotWrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: 0;
+  padding-top: 0;
+  margin-bottom: -28px;
+}
+
+.lapisCard .lapisShotStage {
+  width: min(100%, 1080px);
+  margin-inline: auto;
+  transform: perspective(1800px) rotateX(9deg) rotateY(2deg) rotateZ(-0.9deg) translateX(128px) translateY(-42px) scale(1.7);
+  transform-origin: 72% 100%;
+}
+
+.featureFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, currentColor 68%, white);
+}
+
+.inlineAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.previewCard,
+.compactProjectCard,
+.logoCard {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 38%),
+    #f5f5f5;
+}
+
+.previewBody {
+  display: grid;
+  gap: 18px;
+  height: 100%;
+}
+
+.previewCopy,
+.logoCopy {
+  display: grid;
+  gap: 10px;
+}
+
+.cardTitle,
+.imageTitle {
+  margin: 0;
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.cardBody,
+.imageBody {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.68;
+  color: var(--muted);
+}
+
+.resydMock {
+  margin-top: 8px;
+  width: fit-content;
+  max-width: 88%;
+  margin-inline: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.94);
+  max-height: 244px;
+}
+
+.resydImage {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 244px;
+  object-fit: contain;
+  transform: translateY(-2px);
+}
+
+.imageCard {
+  justify-content: flex-end;
+  padding: 0;
+  background: #101010;
+}
+
+.imageWrap {
+  position: absolute;
+  inset: 0;
+}
+
+.coverImage {
+  object-fit: cover;
+  transform: scale(1.02);
+}
+
+.imageCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(15, 15, 15, 0.08) 0%, rgba(15, 15, 15, 0.64) 100%);
+}
+
+.imageCopy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+  padding: 32px;
+  color: #f5f5f2;
+}
+
+.imageCopy .eyebrow,
+.imageCopy .microBadge {
+  color: rgba(245, 245, 242, 0.82);
+}
+
+.imageCopy .microBadge {
+  background: rgba(245, 245, 242, 0.12);
+}
+
+.imageBody {
+  max-width: 38ch;
+  color: rgba(245, 245, 242, 0.84);
+}
+
+.compactProjectCard,
+.logoCard {
+  justify-content: space-between;
+}
+
+.kicPanel {
+  gap: 12px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.kicPanel .cardBody {
+  max-width: 34ch;
+  line-height: 1.5;
+}
+
+.kicPanel .statInline {
+  gap: 4px;
+  padding-top: 10px;
+}
+
+.kicPanel .statInline strong {
+  font-size: 1.4rem;
+}
+
+.miniLogoCard {
+  gap: 12px;
+  padding: 18px 20px 20px;
+}
+
+.miniLogoCard .logoFrame {
+  width: 120px;
+  height: 52px;
+}
+
+.miniLogoCard .cardBody {
+  max-width: 26ch;
+}
+
+.deloePanel {
+  gap: 12px;
+  padding: 18px 20px 20px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(180deg, #fbfbfb, #efefef);
+}
+
+.cardMetaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 82%, var(--ink));
+}
+
+.cidelFeatureCard {
+  gap: 20px;
+  padding: 32px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(180deg, #f7f7f5, #efefeb);
+}
+
+.cidelMain {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(210px, 0.85fr);
+  gap: 18px;
+  min-height: 0;
+  align-items: start;
+}
+
+.cidelText {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.cidelText .cardTitle {
+  font-size: clamp(2rem, 2.6vw, 2.45rem);
+}
+
+.cidelText .cardTitle,
+.cidelText .cardBody {
+  margin: 0;
+}
+
+.cidelText .cardBody {
+  max-width: 34ch;
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.cidelStats {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.cidelStats .metricCard {
+  padding: 14px 16px;
+}
+
+.cidelStats .metricCard p {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cidelStats .metricCard strong {
+  margin-top: 6px;
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.photoAlbumPanel {
+  isolation: isolate;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 18px 20px 20px;
+  color: #f7f8fc;
+  border-color: rgba(14, 20, 36, 0.08);
+  box-shadow:
+    0 18px 30px rgba(17, 24, 39, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.photoAlbumBackdrop,
+.photoAlbumCopy {
+  position: relative;
+  z-index: 1;
+}
+
+.photoAlbumBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.photoAlbumImage,
+.photoAlbumShade {
+  position: absolute;
+  inset: 0;
+}
+
+.photoAlbumImage {
+  background-image: var(--album-image);
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.01);
+}
+
+.photoAlbumShade {
+  background:
+    linear-gradient(180deg, rgba(7, 10, 18, 0.12), rgba(7, 10, 18, 0.42) 72%, rgba(7, 10, 18, 0.66)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%);
+}
+
+.photoAlbumCopy {
+  display: grid;
+  gap: 8px;
+}
+
+.photoAlbumControls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.photoAlbumDot {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  transition:
+    transform 180ms cubic-bezier(.2, .8, .2, 1),
+    background-color 180ms cubic-bezier(.2, .8, .2, 1);
+  cursor: pointer;
+}
+
+.photoAlbumDot:hover,
+.photoAlbumDot:focus-visible {
+  background: rgba(255, 255, 255, 0.62);
+  transform: scale(1.08);
+  outline: none;
+}
+
+.photoAlbumDotActive {
+  width: 20px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.photoAlbumLabel {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 30px;
+  padding: 0 11px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  font-size: 0.88rem;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.photoAlbumMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.photoAlbumMeta .microBadge,
+.deloePanel .microBadge {
+  min-height: 28px;
+}
+
+.photoAlbumMeta .eyebrow {
+  color: rgba(246, 248, 252, 0.78);
+}
+
+.photoAlbumMeta .microBadge {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(250, 252, 255, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.photoAlbumPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0)),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 34%);
+  pointer-events: none;
+}
+
+.statInline {
+  display: grid;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.statInline span,
+.statInline strong {
+  margin: 0;
+}
+
+.statInline span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.statInline strong {
+  font-size: 1.65rem;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+}
+
+.logoFrame {
+  position: relative;
+  width: 138px;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.logoImage {
+  object-fit: contain;
+  padding: 10px 16px;
+}
+
+:global(html[data-theme="dark"]) .card {
+  border-color: rgba(255, 255, 255, 0.09);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0)),
+    #111111;
+  box-shadow:
+    0 22px 44px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055);
+}
+
+:global(html[data-theme="dark"]) .card:not(.weatherCard)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 28%);
+  opacity: 0.9;
+}
+
+:global(html[data-theme="dark"]) .cardLink:hover .card,
+:global(html[data-theme="dark"]) .cardLink:focus-visible .card,
+:global(html[data-theme="dark"]) .card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 26px 54px rgba(0, 0, 0, 0.44),
+    0 0 0 1px rgba(255, 255, 255, 0.025),
+    inset 0 1px 0 rgba(255, 255, 255, 0.075);
+}
+
+:global(html[data-theme="dark"]) .aboutCard {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), transparent 36%),
+    linear-gradient(180deg, rgba(26, 26, 26, 0.96), rgba(16, 16, 16, 0.98));
+}
+
+:global(html[data-theme="dark"]) .timeCard,
+:global(html[data-theme="dark"]) .contactCard,
+:global(html[data-theme="dark"]) .templateCard,
+:global(html[data-theme="dark"]) .previewCard,
+:global(html[data-theme="dark"]) .compactProjectCard,
+:global(html[data-theme="dark"]) .logoCard {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 34%),
+    linear-gradient(180deg, #171717, #101010);
+}
+
+:global(html[data-theme="dark"]) .tdFeatureCard {
+  color: #f7f7f3;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--project-base, #222) 28%, white) 0%, transparent 32%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--project-base, #1a1a1a) 24%, #101010),
+      color-mix(in srgb, var(--project-base, #1a1a1a) 14%, #090909)
+    );
+}
+
+:global(html[data-theme="dark"]) .neutralFeatureCard {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), transparent 34%),
+    linear-gradient(180deg, #191919, #101010);
+}
+
+:global(html[data-theme="dark"]) .eyebrow,
+:global(html[data-theme="dark"]) .contactLabel,
+:global(html[data-theme="dark"]) .timeDate,
+:global(html[data-theme="dark"]) .cardBody,
+:global(html[data-theme="dark"]) .aboutList,
+:global(html[data-theme="dark"]) .statInline span {
+  color: color-mix(in srgb, var(--muted) 88%, var(--ink));
+}
+
+:global(html[data-theme="dark"]) .aboutBody,
+:global(html[data-theme="dark"]) .timeNotes p,
+:global(html[data-theme="dark"]) .contactIntro,
+:global(html[data-theme="dark"]) .featureBody,
+:global(html[data-theme="dark"]) .imageBody {
+  color: color-mix(in srgb, currentColor 82%, rgba(255, 255, 255, 0.1));
+}
+
+:global(html[data-theme="dark"]) .pill,
+:global(html[data-theme="dark"]) .microBadge,
+:global(html[data-theme="dark"]) .contactButton,
+:global(html[data-theme="dark"]) .metricCard,
+:global(html[data-theme="dark"]) .logoFrame,
+:global(html[data-theme="dark"]) .resydMock,
+:global(html[data-theme="dark"]) .lapisShotFrame {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+:global(html[data-theme="dark"]) .pill,
+:global(html[data-theme="dark"]) .microBadge {
+  color: color-mix(in srgb, var(--muted) 80%, var(--ink));
+}
+
+:global(html[data-theme="dark"]) .microBadgeCopied,
+:global(html[data-theme="dark"]) .contactButtonCopied {
+  border-color: color-mix(in srgb, #7aa2ff 42%, rgba(255, 255, 255, 0.08));
+  background: color-mix(in srgb, #7aa2ff 16%, rgba(255, 255, 255, 0.05));
+  color: color-mix(in srgb, #9bb8ff 70%, white);
+}
+
+:global(html[data-theme="dark"]) .contactButton:hover,
+:global(html[data-theme="dark"]) .contactButton:focus-visible {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+:global(html[data-theme="dark"]) .metricCard p,
+:global(html[data-theme="dark"]) .featureFooter {
+  color: color-mix(in srgb, currentColor 64%, rgba(255, 255, 255, 0.2));
+}
+
+:global(html[data-theme="dark"]) .metricCard strong,
+:global(html[data-theme="dark"]) .statInline strong {
+  color: var(--ink);
+}
+
+:global(html[data-theme="dark"]) .lapisShotFrame {
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.08) inset,
+    0 34px 56px rgba(0, 0, 0, 0.34);
+}
+
+:global(html[data-theme="dark"]) .lapisShotImage {
+  filter:
+    saturate(0.94)
+    brightness(0.92)
+    contrast(1.04)
+    drop-shadow(0 18px 22px rgba(0, 0, 0, 0.24))
+    drop-shadow(0 32px 48px rgba(0, 0, 0, 0.28));
+}
+
+:global(html[data-theme="dark"]) .resydMock {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    #101623;
+}
+
+:global(html[data-theme="dark"]) .logoFrame {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), transparent 36%),
+    rgba(255, 255, 255, 0.04);
+}
+
+:global(html[data-theme="dark"]) .deloePanel,
+:global(html[data-theme="dark"]) .cidelFeatureCard {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 34%),
+    linear-gradient(180deg, #191919, #101010);
+}
+
+:global(html[data-theme="dark"]) .cardMetaRow {
+  border-top-color: rgba(255, 255, 255, 0.08);
+  color: color-mix(in srgb, var(--muted) 82%, var(--ink));
+}
+
+:global(html[data-theme="dark"]) .photoAlbumPanel {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 22px 44px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+:global(html[data-theme="dark"]) .logoImage {
+  filter: brightness(0.96) contrast(1.06);
+}
+
+:global(html[data-theme="dark"]) .imageCard::after {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.74) 100%),
+    linear-gradient(135deg, rgba(17, 31, 61, 0.12), rgba(0, 0, 0, 0));
+}
+
+@keyframes weather-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+@keyframes weather-rain {
+  0% {
+    background-position: 0 0, 14px -20px, 0 0;
+  }
+
+  100% {
+    background-position: -6px 30px, 10px 34px, 0 12px;
+  }
+}
+
+@keyframes weather-snow {
+  0% {
+    background-position: 0 0, 18px 18px;
+  }
+
+  100% {
+    background-position: -28px 28px, -22px 58px;
+  }
+}
+
+@keyframes weather-pulse {
+  0%,
+  100% {
+    opacity: 0.78;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1080px) {
+  .pageShell {
+    padding-top: 70px;
+  }
+
+  .grid,
+  .topCluster,
+  .bottomCluster {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-auto-rows: auto;
+  }
+
+  .aboutCard,
+  .timeCard,
+  .contactCard,
+  .templateCard,
+  .tdCard,
+  .lapisCard,
+  .inBetweenCard,
+  .deloeCard,
+  .cidelCard {
+    grid-column: span 8;
+    grid-row: auto;
+  }
+
+  .resydCard,
+  .photoAlbumCard,
+  .kicCard,
+  .cohereCard,
+  .westernuCard {
+    grid-column: span 4;
+    grid-row: auto;
+  }
+
+  .featureMain {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lapisShotStage {
+    width: min(100%, 620px);
+    margin-left: 0;
+    transform: perspective(1200px) rotateX(8deg) rotateY(4deg) rotateZ(-2deg) translateX(16px);
+  }
+
+  .lapisInlineLogo {
+    width: 54px;
+    height: 54px;
+  }
+}
+
+@media (max-width: 720px) {
+  .pageShell {
+    padding-inline: 4px;
+    padding-top: 54px;
+  }
+
+  .grid,
+  .topCluster,
+  .bottomCluster {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aboutCard,
+  .timeCard,
+  .contactCard,
+  .templateCard,
+  .tdCard,
+  .resydCard,
+  .lapisCard,
+  .inBetweenCard,
+  .cidelCard,
+  .deloeCard,
+  .kicCard,
+  .cohereCard,
+  .westernuCard,
+  .photoAlbumCard {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .card {
+    padding: 24px;
+  }
+
+  .cidelMain {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contactGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .featureFooter,
+  .compactHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .timeHeader {
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .lapisInlineLogo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .lapisShotWrap {
+    padding-top: 2px;
+  }
+
+  .lapisShotStage {
+    width: 100%;
+    transform: perspective(1200px) rotateX(5deg) rotateY(0deg) rotateZ(-1deg) translateX(0);
+  }
+
+  .lapisShotFrame,
+  .lapisShotImage {
+    border-radius: 18px;
+  }
+
+  .weatherFooter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

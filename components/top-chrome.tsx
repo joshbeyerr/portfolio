@@ -77,6 +77,7 @@ const cursorOptions: {
 
 export function TopChrome({ activePath }: TopChromeProps) {
   const isHomePage = activePath === "/";
+  const isWorkSection = activePath === "/work" || activePath.startsWith("/projects/");
   const { cursorMode, setCursorMode, customCursorEnabled } = useCursorMode();
   const siteAudio = useSiteAudio();
   const setSiteAudioAuthEnabled = siteAudio.setAuthEnabled;
@@ -220,13 +221,24 @@ export function TopChrome({ activePath }: TopChromeProps) {
   };
 
   const disabledNavLabels = new Set(["Information", "News"]);
+  const isNavItemActive = (href: string) => {
+    if (href === "/work") {
+      return isWorkSection;
+    }
+
+    return activePath === href;
+  };
 
   return (
     <header className="landing-topbar">
       <div className="landing-leftbar">
-        <div className="landing-heartbox" aria-hidden="true">
+        <Link
+          href="/"
+          className={`landing-heartbox ${isHomePage ? "landing-heartbox-active" : ""}`}
+          aria-label="Home"
+        >
           <Heart className="h-[11px] w-[11px] fill-current" strokeWidth={1.8} />
-        </div>
+        </Link>
         <nav className="landing-nav" aria-label="Primary navigation">
           {navigationItems.map((item) => (
             disabledNavLabels.has(item.label) ? (
@@ -241,7 +253,7 @@ export function TopChrome({ activePath }: TopChromeProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`landing-nav-link ${item.href === activePath ? "landing-nav-link-active" : ""}`}
+                className={`landing-nav-link ${isNavItemActive(item.href) ? "landing-nav-link-active" : ""}`}
               >
                 {item.label}
               </Link>

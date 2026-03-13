@@ -7,23 +7,23 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Your Name | Product Designer and Frontend Engineer",
+    default: "Joshua Beyer | Software Engineer",
     template: "%s",
   },
   description:
-    "Portfolio website for a product designer and frontend engineer focused on calm, precise digital experiences.",
+    "Portfolio website for Joshua Beyer, a software engineer building thoughtful products across finance, AI, and product systems.",
   openGraph: {
-    title: "Your Name | Portfolio",
+    title: "Joshua Beyer | Portfolio",
     description:
-      "Calm, precise digital experiences spanning product strategy, interface systems, and frontend craft.",
-    siteName: "Your Name Portfolio",
+      "Thoughtful digital products spanning finance, AI tooling, maps, and frontend craft.",
+    siteName: "Joshua Beyer Portfolio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your Name | Portfolio",
+    title: "Joshua Beyer | Portfolio",
     description:
-      "Calm, precise digital experiences spanning product strategy, interface systems, and frontend craft.",
+      "Thoughtful digital products spanning finance, AI tooling, maps, and frontend craft.",
   },
 };
 

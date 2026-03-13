@@ -335,6 +335,17 @@ input[type="reset"] {
   color: var(--bg);
 }
 
+.landing-heartbox-active {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bg) 12%, transparent);
+}
+
+.landing-heartbox:hover,
+.landing-heartbox:focus-visible {
+  background: color-mix(in srgb, var(--ink) 82%, black);
+  color: var(--bg);
+  outline: none;
+}
+
 .landing-nav {
   display: flex;
 }

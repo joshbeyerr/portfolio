@@ -27,7 +27,6 @@ function tileClassName(
     `carousel-tile-${variant}`,
     `carousel-tile-${id}`,
     tileStyle === "logo" ? "carousel-tile-logo" : "",
-    size === "hero" ? "carousel-tile-hero" : "",
     size === "wide" ? "carousel-tile-wide" : "",
     size === "square" ? "carousel-tile-square" : "",
   ]
@@ -304,12 +303,6 @@ function CarouselBand({
                   .join(" ")}
                 style={
                   {
-                    ...(entry.item.tileWidth && entry.item.tileHeight
-                      ? {
-                          width: `${entry.item.tileWidth}px`,
-                          height: `${entry.item.tileHeight}px`,
-                        }
-                      : {}),
                     "--carousel-push-x": `${getTilePush(index)}px`,
                   } as CSSProperties
                 }
