@@ -238,14 +238,14 @@ export const landingCarouselItems: LandingCarouselItem[] = [
   },
   {
     id: "kic-product-acquisition",
-    title: "KIC Product Acquisition",
-    label: "KIC Product Acquisition",
-    description: "Founder: Pricing, arbitrage, and analytics systems",
+    title: "Sneaker Commerce Systems",
+    label: "Sneaker Commerce Systems",
+    description: "Founder: resale operations, pricing systems, and internal automation",
     group: "work",
     href: "/projects/kic-product-acquisition",
     image: {
       src: "/carousel/kic_product_acquisition_logo.jpg",
-      alt: "KIC Product Acquisition",
+      alt: "Sneaker Commerce Systems",
     },
     variant: "image",
     size: "wide",
@@ -386,64 +386,77 @@ export const projects: Project[] = [
   {
     slug: "lapis",
     title: "Lapis",
-    heroTitle: "Search Startup",
+    heroTitle: "AI-Native Research Platform",
     client: "Lapis",
     category: "Work",
     pageMode: "full",
     year: "2025 - Present",
     duration: "Jul 2025 - Present",
-    role: "Founding Engineer / Software Engineer",
-    headline: "Semantic search, document systems, and enterprise integrations for research workflows.",
+    role: "Founding Engineer / Full-Stack + AI Systems",
+    headline: "Built an AI-native research platform with equal focus on product clarity, user workflows, and deep technical systems.",
     summary:
-      "Built backend services and distributed systems for semantic search, document querying, and production-grade storage integrations.",
+      "Worked across product, UX, and engineering to shape the researcher experience end to end, from board and document workflows to AI agents, retrieval, tabular data, integrations, and platform infrastructure.",
     description:
-      "At Lapis, the work centered on infrastructure for search and document understanding. That included backend services, storage and sync integrations, authentication flows, research dataset querying, and product surfaces built across Node.js, Next.js, PostgreSQL, Azure, LangChain, OpenAI, FastAPI, vector databases, and Redis.",
-    services: ["Backend systems", "Search infrastructure", "Integrations", "Authentication"],
+      "Lapis is an AI-native project management platform for research teams, not just a search product. The work spanned most of the platform: multi-surface product development, NeuralCore agent orchestration, semantic retrieval, document and knowledge-base systems, import and upload pipelines, tabular dataset handling, enterprise integrations, authentication and permissions, and the day-to-day UX researchers use to run work. Built across Next.js, Node.js, TypeScript, Supabase/Postgres, Azure/OpenAI, pgvector-style retrieval flows, and a growing data pipeline that supports both unstructured documents and structured datasets.",
+    services: ["Product thinking", "UX / UI implementation", "AI platform engineering", "Full-stack systems"],
     stack: [
-      "Node.js",
       "Next.js",
+      "Node.js",
+      "TypeScript",
+      "Supabase",
       "PostgreSQL",
       "Azure",
-      "LangChain",
       "OpenAI",
-      "FastAPI",
-      "Vector DB",
+      "Semantic Retrieval",
+      "AI Agents",
+      "Tabular Querying",
+      "DuckDB Pipelines",
+      "Vector Search",
       "Redis",
       "OAuth2",
       "GitHub",
       "Google Drive",
       "OneDrive",
+      "SharePoint",
     ],
     metrics: [
-      { label: "What it does", value: "Search across research work" },
-      { label: "Data", value: "Papers, notes, and repos" },
-      { label: "Sign-in", value: "Single sign-on (Google, GitHub, etc.)" },
+      { label: "Platform", value: "AI-native PM for research teams" },
+      { label: "Core systems", value: "Agents, search, docs, datasets" },
+      { label: "Product lens", value: "UX, workflows, systems thinking" },
+      { label: "Ownership", value: "Built most of the platform end to end" },
     ],
     outcomes: [
-      "Built systems for semantic search and large-scale document querying.",
-      "Implemented integrations across cloud storage providers and GitHub.",
-      "Enabled secure user access and scoped permissions with Azure AD flows.",
+      "Built NeuralCore, a staged AI assistant pipeline with intent routing, scoped retrieval, streaming responses, eval tooling, and workspace-aware behavior.",
+      "Implemented semantic search and document-grounded retrieval across research files, notes, boards, and project context.",
+      "Built upload, import, review, and ingestion flows for documents and structured datasets, including tabular querying paths for CSV and spreadsheet workflows.",
+      "Designed and shipped product flows researchers actually work inside, balancing complex capabilities with usable interfaces, information architecture, and clearer task-oriented UX.",
+      "Shipped document management, knowledge-base organization, permissions, authentication, and enterprise integrations across the product surface.",
     ],
     detailSections: [
       {
-        heading: "Search",
+        heading: "Platform",
         body:
-          "Built backend services and distributed systems to support semantic search across large research datasets, including retrieval and vector-backed querying workflows.",
+          "Built Lapis as a full product platform for research teams: project workspaces, board experiences, result capture, document systems, onboarding flows, permissions, and the infrastructure tying it all together. A large part of the work was not just engineering features, but shaping how the product should feel, flow, and support real research work.",
       },
       {
-        heading: "Integrations",
+        heading: "AI + Retrieval",
         body:
-          "Implemented production-grade Google Drive, OneDrive, cloud storage, and GitHub integrations with reliable sync workflows.",
+          "Developed the NeuralCore architecture around classification, planning, retrieval, execution, and response streaming. That included semantic search, project-scoped retrieval, document/entity handlers, context management, evaluation harnesses, and AI-native product behavior instead of a simple chat wrapper.",
       },
       {
-        heading: "Access",
+        heading: "Documents + Data",
         body:
-          "Built Azure Active Directory OAuth2 flows to support secure authentication and scoped third-party access.",
+          "Built the document and ingestion layer researchers actually operate in: uploads, imports, review states, embeddings, file viewers, knowledge-base organization, and structured dataset support for CSV/XLSX-style analytical workflows and tabular querying. That work also required thoughtful UX for dense information, status feedback, and multi-step workflows.",
       },
       {
-        heading: "Stack",
+        heading: "Product + UX",
         body:
-          "The product and platform work spanned Node.js, Next.js, PostgreSQL, Azure, LangChain, OpenAI, FastAPI, vector databases, and Redis alongside the storage and integration layer.",
+          "Contributed heavily to the product layer itself: translating complex AI and data capabilities into interfaces researchers could actually navigate, trust, and use. That included workflow design, interaction decisions, UI implementation, and making technically heavy features feel more coherent inside the platform.",
+      },
+      {
+        heading: "Integrations + Access",
+        body:
+          "Implemented and supported production integrations across GitHub, Google Drive, OneDrive, and SharePoint-style enterprise workflows, alongside authentication, scoped permissions, org/project isolation, and the operational plumbing required to make the platform usable in real teams.",
       },
     ],
     palette: {
@@ -608,58 +621,58 @@ export const projects: Project[] = [
   },
   {
     slug: "kic-product-acquisition",
-    title: "KIC Product Acquisition",
-    heroTitle: "Pricing Engine",
-    client: "KIC Product Acquisition",
+    title: "Sneaker Commerce Systems",
+    heroTitle: "Resale Operations Systems",
+    client: "Independent Venture",
     category: "Work",
     pageMode: "brief",
     year: "2021 - 2025",
     duration: "Nov 2021 - Aug 2025",
     role: "Founder",
-    headline: "Built pricing and arbitrage systems that helped grow a founder-led business to $2M in revenue.",
+    headline: "Ran a sneaker and marketplace resale operation, building the internal software systems that made sourcing, pricing, and execution more scalable.",
     summary:
-      "Engineered pricing, analytics, and reconciliation systems that scaled a founder-led business to $2M in revenue.",
+      "Built internal tooling for monitoring, purchasing, inventory tracking, pricing, and operations in a resale business that reached roughly $2M in revenue.",
     description:
-      "KIC combined software, operations, and decision-making. I built pricing systems, arbitrage logic, and analytics workflows that made the business faster, sharper, and more repeatable as it grew.",
-    services: ["Automation", "Analytics", "Pricing systems", "Operations tooling"],
-    stack: ["Python", "Analytics pipelines", "Marketplace automation"],
+      "KIC was not a venture-style software startup. It was a founder-run e-commerce and resale operation, focused mainly on sneakers and other marketplace-driven inventory. The technical side came from building internal systems that improved how we monitored product opportunities, automated parts of purchasing workflows, tracked inventory, managed pricing, and kept the operation from becoming purely manual as volume increased.",
+    services: ["Operations automation", "Pricing systems", "Inventory tooling", "Analytics"],
+    stack: ["Python", "Monitoring tools", "Inventory systems", "Pricing automation", "Analytics pipelines"],
     metrics: [
       { label: "Revenue", value: "$2M" },
-      { label: "Model", value: "Arbitrage" },
-      { label: "Focus", value: "Pricing" },
+      { label: "Model", value: "Resale / e-commerce" },
+      { label: "Focus", value: "Monitoring, pricing, operations" },
     ],
     outcomes: [
-      "Built automated pricing systems for StockX-style markets.",
-      "Scaled a founder-led business to $2M in revenue.",
-      "Improved pricing accuracy and operational efficiency with analytics and reconciliation tooling.",
+      "Built internal software for product monitoring, purchasing support, inventory tracking, and pricing decisions.",
+      "Grew the business to roughly $2M in revenue while using software to reduce manual operational overhead.",
+      "Improved pricing consistency and day-to-day execution with analytics, reconciliation, and operational tooling.",
     ],
     detailSections: [
       {
         heading: "Systems",
         body:
-          "Engineered pricing and arbitrage systems for marketplace assets with a focus on timing, accuracy, and operational leverage.",
+          "Built practical internal systems around resale operations: monitoring opportunities, supporting purchase flows, tracking inventory, and managing pricing across marketplace-driven products.",
       },
       {
         heading: "Decisioning",
         body:
-          "Built analytics and reconciliation pipelines to support pricing decisions and day-to-day execution.",
+          "Built analytics and reconciliation workflows to support buy/no-buy decisions, pricing adjustments, inventory visibility, and tighter day-to-day execution.",
       },
     ],
     briefSections: [
       {
         heading: "Tools",
         body:
-          "Python, analytics pipelines, marketplace automation, pricing logic, and reconciliation tooling.",
+          "Python, monitoring tools, inventory tracking systems, pricing logic, analytics pipelines, and operational automation.",
       },
       {
         heading: "Built",
         body:
-          "I built internal systems for pricing, arbitrage, and operational tracking in a marketplace-driven business. That meant creating software that supported buying decisions, pricing accuracy, and the day-to-day workflows needed to scale without adding the same amount of manual effort.",
+          "I built internal systems for monitoring releases, supporting purchase workflows, tracking inventory, managing pricing, and keeping the business operationally tight as it grew. The software was built for a real commercial use case first, which made it a strong lesson in writing systems that had to be useful immediately.",
       },
       {
         heading: "Learned",
         body:
-          "Running this sharpened both my product and engineering instincts. It taught me how to build systems that are useful because they tie directly to a business decision, not because they are technically impressive in isolation.",
+          "Running this sharpened both my engineering and operator instincts. It taught me how to build software around real margins, real constraints, and real execution speed, where the value of a system is measured by whether it improves an actual business decision.",
       },
     ],
     palette: {

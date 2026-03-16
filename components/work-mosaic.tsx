@@ -696,11 +696,11 @@ export function WorkMosaic() {
         <FeatureWorkCard
           project={lapisProject}
           className={styles.lapisCard}
-          description="Founding engineering at Lapis, your research teams AI-Native Project Management Tool. Building across semantic search, document systems, enterprise integrations, and user experience."
+          description="Founding engineering at Lapis, an AI-native research operations platform. Built across agent workflows, semantic retrieval, tabular data handling, document systems, enterprise integrations, and the core product experience."
           stats={[
             { label: "Position", value: "Founding Eng" },
             { label: "Team", value: "Core Platform" },
-            { label: "Tools", value: "Node.js, Next.js" },
+            { label: "Tools", value: "Next.js, Node.js, AI Systems" },
           ]}
         />
 
@@ -769,8 +769,8 @@ export function WorkMosaic() {
               <p className={styles.eyebrow}>Work</p>
               <h2 className={styles.cardTitle}>{kicProject.title}</h2>
               <p className={styles.cardBody}>
-                Founder-led pricing, analytics, and arbitrage systems for
-                marketplace inventory.
+                Founder-led resale operation with internal systems for
+                monitoring, inventory, pricing, and execution.
               </p>
               <div className={styles.statInline}>
                 <span>Revenue</span>
