@@ -423,7 +423,7 @@ export const projects: Project[] = [
       { label: "Platform", value: "AI-native PM for research teams" },
       { label: "Core systems", value: "Agents, search, docs, datasets" },
       { label: "Product lens", value: "UX, workflows, systems thinking" },
-      { label: "Ownership", value: "Built most of the platform end to end" },
+      { label: "Team", value: "Built with a 5-person founding team" },
     ],
     outcomes: [
       "Built NeuralCore, a staged AI assistant pipeline with intent routing, scoped retrieval, streaming responses, eval tooling, and workspace-aware behavior.",
