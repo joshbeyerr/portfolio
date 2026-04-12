@@ -20,10 +20,17 @@ import {
   Zap,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useMemo, useState } from "react";
-import type { CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { contactChannels, projects } from "@/lib/site-data";
+import {
+  useIntroPhase,
+  StaticNoise,
+  VooshGlow,
+  INTRO_EASE,
+} from "./intro-animation";
+import introStyles from "./intro-animation.module.css";
 import type {
   WeatherConditionKey,
   WorkWeatherSnapshot,
@@ -645,254 +652,393 @@ function FeatureWorkCard({
   );
 }
 
+function ScrollReveal({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      className={`${introStyles.scrollRevealWrap} ${className ?? ""}`}
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ duration: 0.6, delay, ease: INTRO_EASE }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export function WorkMosaic() {
+  const { phase, registerAboutRef, triggerCascade } = useIntroPhase();
+  const aboutRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    registerAboutRef(aboutRef);
+  }, [registerAboutRef]);
+
+  const isAnimating = phase !== "complete";
+  const aboutRevealed =
+    phase === "about-reveal" ||
+    phase === "waiting-cascade" ||
+    phase === "cascade-reveal" ||
+    phase === "complete";
+  const cascadeRevealed =
+    phase === "cascade-reveal" ||
+    phase === "complete";
+  const waitingForCascade = phase === "waiting-cascade";
+
+  /* Retro CRT look: blur + desaturated + high contrast for posterized feel */
+  const retroInitial = {
+    filter: "blur(6px) saturate(0.15) brightness(0.82) contrast(1.6)",
+    opacity: 0.85,
+    scale: 0.985,
+  };
+  const retroClear = {
+    filter: "blur(0px) saturate(1) brightness(1) contrast(1)",
+    opacity: 1,
+    scale: 1,
+  };
+
   return (
     <section className={styles.pageShell}>
       <div className={styles.grid}>
-        <article className={`${styles.card} ${styles.aboutCard}`}>
-          <div className={styles.aboutLead}>
-            <h1 className={styles.aboutTitle}>
-            Hi, I'm Josh! A software engineer, product minded builder, and Computer Science student
-        
-            </h1>
-            <p className={styles.aboutBody}>
-              I'm passionate about making things that become real and
-              consequential, whether that's an app, a product experience, or
-              music.
-            </p>
-          </div>
+        {/* ── AboutCard with voosh reveal ── */}
+        <motion.div
+          ref={aboutRef}
+          className={`${introStyles.introAboutWrap} ${isAnimating ? introStyles.introAnimating : ""}`}
+          initial={retroInitial}
+          animate={aboutRevealed ? retroClear : retroInitial}
+          transition={
+            aboutRevealed
+              ? { duration: 0.6, ease: INTRO_EASE }
+              : { duration: 0 }
+          }
+        >
+          <StaticNoise visible={isAnimating && !aboutRevealed} />
+          <VooshGlow active={phase === "about-reveal"} />
+          <article className={`${styles.card} ${styles.aboutCard}`}>
+            <div className={styles.aboutLead}>
+              <h1 className={styles.aboutTitle}>
+              Hi, I'm Josh! A software engineer, product minded builder, and Computer Science student
 
-          <ul className={styles.aboutList}>
-            {aboutBullets.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+              </h1>
+              <p className={styles.aboutBody}>
+                I'm passionate about making things that become real and
+                consequential, whether that's an app, a product experience, or
+                music.
+              </p>
+            </div>
 
-          <div className={styles.pillRow}>
-            <span className={styles.pill}>
-              <MapPin className="h-3.5 w-3.5" strokeWidth={1.7} />
-              Toronto, Ontario
-            </span>
-          </div>
-        </article>
+            <ul className={styles.aboutList}>
+              {aboutBullets.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
 
-        <TorontoTimeCard />
-        <ContactCard />
-        <WeatherCard />
+            <div className={styles.pillRow}>
+              <span className={styles.pill}>
+                <MapPin className="h-3.5 w-3.5" strokeWidth={1.7} />
+                Toronto, Ontario
+              </span>
+            </div>
+          </article>
+        </motion.div>
 
+        {/* ── Cascade cards (click or scroll to reveal) ── */}
+        <motion.div
+          className={`${introStyles.introTimeWrap} ${isAnimating ? introStyles.introAnimating : ""}`}
+          initial={retroInitial}
+          animate={cascadeRevealed ? retroClear : retroInitial}
+          transition={
+            cascadeRevealed
+              ? { duration: 0.7, delay: 0, ease: INTRO_EASE }
+              : { duration: 0 }
+          }
+        >
+          <StaticNoise visible={isAnimating && !cascadeRevealed} />
+          <VooshGlow active={phase === "cascade-reveal"} />
+          {waitingForCascade && (
+            <div className={introStyles.clickableOverlay} onClick={triggerCascade} />
+          )}
+          <TorontoTimeCard />
+        </motion.div>
+
+        <motion.div
+          className={`${introStyles.introContactWrap} ${isAnimating ? introStyles.introAnimating : ""}`}
+          initial={retroInitial}
+          animate={cascadeRevealed ? retroClear : retroInitial}
+          transition={
+            cascadeRevealed
+              ? { duration: 0.7, delay: 0.3, ease: INTRO_EASE }
+              : { duration: 0 }
+          }
+        >
+          <StaticNoise visible={isAnimating && !cascadeRevealed} />
+          <VooshGlow active={phase === "cascade-reveal"} />
+          {waitingForCascade && (
+            <div className={introStyles.clickableOverlay} onClick={triggerCascade} />
+          )}
+          <ContactCard />
+        </motion.div>
+
+        <motion.div
+          className={`${introStyles.introWeatherWrap} ${isAnimating ? introStyles.introAnimating : ""}`}
+          initial={retroInitial}
+          animate={cascadeRevealed ? retroClear : retroInitial}
+          transition={
+            cascadeRevealed
+              ? { duration: 0.7, delay: 0.6, ease: INTRO_EASE }
+              : { duration: 0 }
+          }
+        >
+          <StaticNoise visible={isAnimating && !cascadeRevealed} />
+          <VooshGlow active={phase === "cascade-reveal"} />
+          {waitingForCascade && (
+            <div className={introStyles.clickableOverlay} onClick={triggerCascade} />
+          )}
+          <WeatherCard />
+        </motion.div>
+
+        {/* ── Scroll-reveal clusters ── */}
         <div className={styles.topCluster}>
-          <FeatureWorkCard
-            project={tdProject}
-            className={styles.tdCard}
-            description="Contributing to Java services, regression testing, and React improvements for the Market Risk Insights platform supporting trading workflows."
-            stats={[
-              { label: "Position", value: "Software Eng Co-op" },
-              { label: "Team", value: "Market Risk Insights" },
-              { label: "Tools", value: "Java, React, Cucumber" },
-            ]}
-            ctaLabel="Role details"
-          />
+          <ScrollReveal delay={0} className={styles.tdCard}>
+            <FeatureWorkCard
+              project={tdProject}
+              className=""
+              description="Contributing to Java services, regression testing, and React improvements for the Market Risk Insights platform supporting trading workflows."
+              stats={[
+                { label: "Position", value: "Software Eng Co-op" },
+                { label: "Team", value: "Market Risk Insights" },
+                { label: "Tools", value: "Java, React, Cucumber" },
+              ]}
+              ctaLabel="Role details"
+            />
+          </ScrollReveal>
 
-        <FeatureWorkCard
-          project={lapisProject}
-          className={styles.lapisCard}
-          description="Founding engineering at Lapis, an AI-native research operations platform. Built across agent workflows, semantic retrieval, tabular data handling, document systems, enterprise integrations, and the core product experience."
-          stats={[
-            { label: "Position", value: "Founding Eng" },
-            { label: "Team", value: "Core Platform" },
-            { label: "Tools", value: "Next.js, Node.js, AI Systems" },
-          ]}
-        />
+          <ScrollReveal delay={0.12} className={styles.lapisCard}>
+            <FeatureWorkCard
+              project={lapisProject}
+              className=""
+              description="Founding engineering at Lapis, an AI-native research operations platform. Built across agent workflows, semantic retrieval, tabular data handling, document systems, enterprise integrations, and the core product experience."
+              stats={[
+                { label: "Position", value: "Founding Eng" },
+                { label: "Team", value: "Core Platform" },
+                { label: "Tools", value: "Next.js, Node.js, AI Systems" },
+              ]}
+            />
+          </ScrollReveal>
 
-          <Link
-            href={`/projects/${resydProject.slug}`}
-            className={`${styles.cardLink} ${styles.resydCard}`}
-          >
-            <article className={`${styles.card} ${styles.previewCard}`}>
-              <div className={styles.compactHeader}>
-                <p className={styles.eyebrow}>Project</p>
-              </div>
-              <div className={styles.previewBody}>
-                <div className={styles.previewCopy}>
-                <h2 className={styles.cardTitle}>Get Resyd</h2>
-                <p className={styles.cardBody}>
-                  Reservation monitoring and auto-booking for people who decide late and move
-                  fast.
-                </p>
-              </div>
-                <div className={styles.resydMock}>
-                  <Image
-                    src="/resy2.jpg"
-                    alt="Get Resyd reservation booking flow shown on a laptop screen"
-                    width={788}
-                    height={424}
-                    className={styles.resydImage}
-                  />
-                </div>
-              </div>
-            </article>
-          </Link>
-
-          <Link
-            href={`/projects/${inBetweenProject.slug}`}
-            className={`${styles.cardLink} ${styles.inBetweenCard}`}
-          >
-            <article className={`${styles.card} ${styles.imageCard}`}>
-              <div className={styles.imageWrap}>
-                <Image
-                  src="/carousel/in-between.jpg"
-                  alt="The In-Between Spaces interface preview"
-                  fill
-                  sizes="(max-width: 720px) 100vw, (max-width: 1080px) 100vw, 56vw"
-                  className={styles.coverImage}
-                />
-              </div>
-              <div className={styles.imageCopy}>
+          <ScrollReveal delay={0.08} className={styles.resydCard}>
+            <Link
+              href={`/projects/${resydProject.slug}`}
+              className={styles.cardLink}
+            >
+              <article className={`${styles.card} ${styles.previewCard}`}>
                 <div className={styles.compactHeader}>
                   <p className={styles.eyebrow}>Project</p>
-                  <span className={styles.microBadge}>Toronto map</span>
                 </div>
-                <h2 className={styles.imageTitle}>{inBetweenProject.title}</h2>
-                <p className={styles.imageBody}>
-                  A calmer map for discovering third spaces and coworking
-                  spots across Toronto that are typically hidden from the public.
-                </p>
-              </div>
-            </article>
-          </Link>
+                <div className={styles.previewBody}>
+                  <div className={styles.previewCopy}>
+                  <h2 className={styles.cardTitle}>Get Resyd</h2>
+                  <p className={styles.cardBody}>
+                    Reservation monitoring and auto-booking for people who decide late and move
+                    fast.
+                  </p>
+                </div>
+                  <div className={styles.resydMock}>
+                    <Image
+                      src="/resy2.jpg"
+                      alt="Get Resyd reservation booking flow shown on a laptop screen"
+                      width={788}
+                      height={424}
+                      className={styles.resydImage}
+                    />
+                  </div>
+                </div>
+              </article>
+            </Link>
+          </ScrollReveal>
 
-          <Link
-            href={`/projects/${kicProject.slug}`}
-            className={`${styles.cardLink} ${styles.kicCard}`}
-          >
-            <article className={`${styles.card} ${styles.compactProjectCard} ${styles.kicPanel}`}>
-              <p className={styles.eyebrow}>Work</p>
-              <h2 className={styles.cardTitle}>{kicProject.title}</h2>
-              <p className={styles.cardBody}>
-                Founder-led resale operation with internal systems for
-                monitoring, inventory, pricing, and execution.
-              </p>
-              <div className={styles.statInline}>
-                <span>Revenue</span>
-                <strong>$2M</strong>
-              </div>
-            </article>
-          </Link>
+          <ScrollReveal delay={0.04} className={styles.inBetweenCard}>
+            <Link
+              href={`/projects/${inBetweenProject.slug}`}
+              className={styles.cardLink}
+            >
+              <article className={`${styles.card} ${styles.imageCard}`}>
+                <div className={styles.imageWrap}>
+                  <Image
+                    src="/carousel/in-between.jpg"
+                    alt="The In-Between Spaces interface preview"
+                    fill
+                    sizes="(max-width: 720px) 100vw, (max-width: 1080px) 100vw, 56vw"
+                    className={styles.coverImage}
+                  />
+                </div>
+                <div className={styles.imageCopy}>
+                  <div className={styles.compactHeader}>
+                    <p className={styles.eyebrow}>Project</p>
+                    <span className={styles.microBadge}>Toronto map</span>
+                  </div>
+                  <h2 className={styles.imageTitle}>{inBetweenProject.title}</h2>
+                  <p className={styles.imageBody}>
+                    A calmer map for discovering third spaces and coworking
+                    spots across Toronto that are typically hidden from the public.
+                  </p>
+                </div>
+              </article>
+            </Link>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.16} className={styles.kicCard}>
+            <Link
+              href={`/projects/${kicProject.slug}`}
+              className={styles.cardLink}
+            >
+              <article className={`${styles.card} ${styles.compactProjectCard} ${styles.kicPanel}`}>
+                <p className={styles.eyebrow}>Work</p>
+                <h2 className={styles.cardTitle}>{kicProject.title}</h2>
+                <p className={styles.cardBody}>
+                  Founder-led resale operation with internal systems for
+                  monitoring, inventory, pricing, and execution.
+                </p>
+                <div className={styles.statInline}>
+                  <span>Revenue</span>
+                  <strong>$2M</strong>
+                </div>
+              </article>
+            </Link>
+          </ScrollReveal>
         </div>
 
         <div className={styles.bottomCluster}>
-          <Link
-            href={`/projects/${deloeProject.slug}`}
-            className={`${styles.cardLink} ${styles.deloeCard}`}
-          >
-            <article className={`${styles.card} ${styles.compactProjectCard} ${styles.deloePanel}`}>
-              <div className={styles.compactHeader}>
-                <p className={styles.eyebrow}>Project</p>
-              </div>
-              <h2 className={styles.cardTitle}>Deloe</h2>
-              <p className={styles.cardBody}>
-                Startup MVP for affordable student moving, with user-mover
-                matching, pricing, and a mover dashboard.
-              </p>
-              <div className={styles.cardMetaRow}>
-                <span>Marketplace MVP</span>
-                <span>Matching system</span>
-              </div>
-            </article>
-          </Link>
+          <ScrollReveal delay={0} className={styles.deloeCard}>
+            <Link
+              href={`/projects/${deloeProject.slug}`}
+              className={styles.cardLink}
+            >
+              <article className={`${styles.card} ${styles.compactProjectCard} ${styles.deloePanel}`}>
+                <div className={styles.compactHeader}>
+                  <p className={styles.eyebrow}>Project</p>
+                </div>
+                <h2 className={styles.cardTitle}>Deloe</h2>
+                <p className={styles.cardBody}>
+                  Startup MVP for affordable student moving, with user-mover
+                  matching, pricing, and a mover dashboard.
+                </p>
+                <div className={styles.cardMetaRow}>
+                  <span>Marketplace MVP</span>
+                  <span>Matching system</span>
+                </div>
+              </article>
+            </Link>
+          </ScrollReveal>
 
-          <Link
-            href={`/projects/${cidelProject.slug}`}
-            className={`${styles.cardLink} ${styles.cidelCard}`}
-          >
-            <article className={`${styles.card} ${styles.cidelFeatureCard}`}>
-              <div className={styles.compactHeader}>
-                <p className={styles.eyebrow}>Work</p>
-              </div>
-              <div className={styles.cidelMain}>
-                <div className={styles.cidelText}>
-                  <h2 className={styles.cardTitle}>Cidel</h2>
+          <ScrollReveal delay={0.06} className={styles.cidelCard}>
+            <Link
+              href={`/projects/${cidelProject.slug}`}
+              className={styles.cardLink}
+            >
+              <article className={`${styles.card} ${styles.cidelFeatureCard}`}>
+                <div className={styles.compactHeader}>
+                  <p className={styles.eyebrow}>Work</p>
+                </div>
+                <div className={styles.cidelMain}>
+                  <div className={styles.cidelText}>
+                    <h2 className={styles.cardTitle}>Cidel</h2>
+                    <p className={styles.cardBody}>
+                      Banking platform delivery, internal tooling, and workflow
+                      automation for finance operations.
+                    </p>
+                  </div>
+                  <div className={styles.cidelStats}>
+                    <div className={styles.metricCard}>
+                      <p>Position</p>
+                      <strong>Software Dev Intern</strong>
+                    </div>
+                    <div className={styles.metricCard}>
+                      <p>Team</p>
+                      <strong>Wealth Systems</strong>
+                    </div>
+                    <div className={styles.metricCard}>
+                      <p>Tools</p>
+                      <strong>Java, SQL, React</strong>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.cardMetaRow}>
+                  <span>Role details</span>
+                  <span className={styles.inlineAction}>
+                    Role details
+                    <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.5} />
+                  </span>
+                </div>
+              </article>
+            </Link>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.12} className={styles.cohereCard}>
+            <Link
+              href={`/projects/${cohereProject.slug}`}
+              className={styles.cardLink}
+            >
+              <article className={`${styles.card} ${styles.logoCard} ${styles.miniLogoCard}`}>
+                <div className={styles.logoFrame}>
+                  <Image
+                    src="/carousel/cohere_ai_logo.png"
+                    alt="Cohere logo"
+                    fill
+                    sizes="160px"
+                    className={styles.logoImage}
+                  />
+                </div>
+                <div className={styles.logoCopy}>
+                  <p className={styles.eyebrow}>Work</p>
+                  <h2 className={styles.cardTitle}>Cohere</h2>
                   <p className={styles.cardBody}>
-                    Banking platform delivery, internal tooling, and workflow
-                    automation for finance operations.
+                    LLM dataset evaluation and QA support for production model
+                    workflows.
                   </p>
                 </div>
-                <div className={styles.cidelStats}>
-                  <div className={styles.metricCard}>
-                    <p>Position</p>
-                    <strong>Software Dev Intern</strong>
-                  </div>
-                  <div className={styles.metricCard}>
-                    <p>Team</p>
-                    <strong>Wealth Systems</strong>
-                  </div>
-                  <div className={styles.metricCard}>
-                    <p>Tools</p>
-                    <strong>Java, SQL, React</strong>
-                  </div>
+              </article>
+            </Link>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.12} className={styles.westernuCard}>
+            <Link
+              href={`/projects/${westernuProject.slug}`}
+              className={styles.cardLink}
+            >
+              <article className={`${styles.card} ${styles.logoCard} ${styles.miniLogoCard}`}>
+                <div className={styles.logoFrame}>
+                  <Image
+                    src="/carousel/westernuai_logo_transparent.png"
+                    alt="WesternU AI logo"
+                    fill
+                    sizes="160px"
+                    className={styles.logoImage}
+                  />
                 </div>
-              </div>
-              <div className={styles.cardMetaRow}>
-                <span>Role details</span>
-                <span className={styles.inlineAction}>
-                  Role details
-                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.5} />
-                </span>
-              </div>
-            </article>
-          </Link>
+                <div className={styles.logoCopy}>
+                  <p className={styles.eyebrow}>Volunteer</p>
+                  <h2 className={styles.cardTitle}>WesternU AI</h2>
+                  <p className={styles.cardBody}>
+                    Directed club finances and built Python sponsor-outreach tools
+                    that used AI to support Western AI events.
+                  </p>
+                </div>
+              </article>
+            </Link>
+          </ScrollReveal>
 
-          <Link
-            href={`/projects/${cohereProject.slug}`}
-            className={`${styles.cardLink} ${styles.cohereCard}`}
-          >
-            <article className={`${styles.card} ${styles.logoCard} ${styles.miniLogoCard}`}>
-              <div className={styles.logoFrame}>
-                <Image
-                  src="/carousel/cohere_ai_logo.png"
-                  alt="Cohere logo"
-                  fill
-                  sizes="160px"
-                  className={styles.logoImage}
-                />
-              </div>
-              <div className={styles.logoCopy}>
-                <p className={styles.eyebrow}>Work</p>
-                <h2 className={styles.cardTitle}>Cohere</h2>
-                <p className={styles.cardBody}>
-                  LLM dataset evaluation and QA support for production model
-                  workflows.
-                </p>
-              </div>
-            </article>
-          </Link>
-
-          <Link
-            href={`/projects/${westernuProject.slug}`}
-            className={`${styles.cardLink} ${styles.westernuCard}`}
-          >
-            <article className={`${styles.card} ${styles.logoCard} ${styles.miniLogoCard}`}>
-              <div className={styles.logoFrame}>
-                <Image
-                  src="/carousel/westernuai_logo_transparent.png"
-                  alt="WesternU AI logo"
-                  fill
-                  sizes="160px"
-                  className={styles.logoImage}
-                />
-              </div>
-              <div className={styles.logoCopy}>
-                <p className={styles.eyebrow}>Volunteer</p>
-                <h2 className={styles.cardTitle}>WesternU AI</h2>
-                <p className={styles.cardBody}>
-                  Directed club finances and built Python sponsor-outreach tools
-                  that used AI to support Western AI events.
-                </p>
-              </div>
-            </article>
-          </Link>
-
-          <PhotoAlbumCard />
+          <ScrollReveal delay={0.18} className={introStyles.scrollPhotoAlbumWrap}>
+            <PhotoAlbumCard />
+          </ScrollReveal>
         </div>
       </div>
     </section>

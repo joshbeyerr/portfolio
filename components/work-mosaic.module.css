@@ -74,8 +74,6 @@
 }
 
 .aboutCard {
-  grid-column: 1 / span 6;
-  grid-row: 1 / span 8;
   justify-content: space-between;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0) 42%),
@@ -83,16 +81,12 @@
 }
 
 .timeCard {
-  grid-column: 7 / span 6;
-  grid-row: 1 / span 5;
   gap: 10px;
   padding-top: 28px;
   padding-bottom: 26px;
 }
 
 .contactCard {
-  grid-column: 7 / span 3;
-  grid-row: 6 / span 3;
   gap: 12px;
   justify-content: flex-start;
   padding-top: 18px;
@@ -100,8 +94,6 @@
 }
 
 .templateCard {
-  grid-column: 10 / span 3;
-  grid-row: 6 / span 3;
   gap: 12px;
   justify-content: flex-start;
   padding: 18px 20px 20px;
@@ -153,8 +145,6 @@
 }
 
 .photoAlbumCard {
-  grid-column: 7 / span 3;
-  grid-row: 4 / span 3;
 }
 
 .aboutLead {
@@ -1677,10 +1667,6 @@
     grid-auto-rows: auto;
   }
 
-  .aboutCard,
-  .timeCard,
-  .contactCard,
-  .templateCard,
   .tdCard,
   .lapisCard,
   .inBetweenCard,
@@ -1691,7 +1677,6 @@
   }
 
   .resydCard,
-  .photoAlbumCard,
   .kicCard,
   .cohereCard,
   .westernuCard {
@@ -1727,10 +1712,6 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .aboutCard,
-  .timeCard,
-  .contactCard,
-  .templateCard,
   .tdCard,
   .resydCard,
   .lapisCard,
@@ -1739,8 +1720,7 @@
   .deloeCard,
   .kicCard,
   .cohereCard,
-  .westernuCard,
-  .photoAlbumCard {
+  .westernuCard {
     grid-column: 1 / -1;
     grid-row: auto;
   }
